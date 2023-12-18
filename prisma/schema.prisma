@@ -9,3 +9,87 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       String   @id @default(uuid())
+  userName String   @unique
+  password String
+  role     UserRole
+
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  superAdmin SuperAdmin?
+  admin      Admin?
+  driver     Driver?
+  helper     Helper?
+
+  @@map("users")
+}
+
+model SuperAdmin {
+  id       String  @id @default(uuid())
+  fullName String
+  mobile   String  @unique
+  address  String?
+  userId   String  @unique
+  user     User    @relation(fields: [userId], references: [id])
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("superAdmins")
+}
+
+model Admin {
+  id       String  @id @default(uuid())
+  fullName String
+  mobile   String  @unique
+  address  String?
+  userId   String  @unique
+  user     User    @relation(fields: [userId], references: [id])
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admins")
+}
+
+model Driver {
+  id       String  @id @default(uuid())
+  fullName String
+  mobile   String  @unique
+  address  String?
+  userId   String  @unique
+  user     User    @relation(fields: [userId], references: [id])
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("drivers")
+}
+
+model Helper {
+  id       String  @id @default(uuid())
+  fullName String
+  mobile   String  @unique
+  address  String?
+  userId   String  @unique
+  user     User    @relation(fields: [userId], references: [id])
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("helpers")
+}
+
+// enum
+enum UserRole {
+  super_admin
+  admin
+  driver
+  helper
+}
