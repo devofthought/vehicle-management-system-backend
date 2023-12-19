@@ -3,10 +3,20 @@ import { SuperAdminRoutes } from '../modules/superAdmin/superAdmin.route';
 import { AdminRoutes } from '../modules/admin/admin.route';
 import { DriverRoutes } from '../modules/driver/driver.route';
 import { HelperRoutes } from '../modules/helper/helper.route';
+import { AuthRoutes } from '../modules/auth/auth.route';
+import { UserRoutes } from '../modules/user/user.route';
 
 const router = express.Router();
 
 const moduleRoutes = [
+  {
+    path: '/auth',
+    route: AuthRoutes,
+  },
+  {
+    path: '/user',
+    route: UserRoutes,
+  },
   {
     path: '/super-admin',
     route: SuperAdminRoutes,
