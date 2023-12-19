@@ -2,6 +2,7 @@ import express from 'express';
 import { SuperAdminRoutes } from '../modules/superAdmin/superAdmin.route';
 import { AdminRoutes } from '../modules/admin/admin.route';
 import { DriverRoutes } from '../modules/driver/driver.route';
+import { HelperRoutes } from '../modules/helper/helper.route';
 
 const router = express.Router();
 
@@ -17,6 +18,10 @@ const moduleRoutes = [
   {
     path: '/driver',
     route: DriverRoutes,
+  },
+  {
+    path: '/helper',
+    route: HelperRoutes,
   },
 ];
 
