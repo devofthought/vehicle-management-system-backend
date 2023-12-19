@@ -58,6 +58,7 @@ model Admin {
 
 model Driver {
   id       String  @id @default(uuid())
+  driverId String  @unique
   fullName String
   mobile   String  @unique
   address  String?
@@ -73,6 +74,7 @@ model Driver {
 
 model Helper {
   id       String  @id @default(uuid())
+  helperId String  @unique
   fullName String
   mobile   String  @unique
   address  String?
