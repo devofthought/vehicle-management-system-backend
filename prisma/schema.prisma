@@ -66,8 +66,11 @@ model Driver {
   user     User    @relation(fields: [userId], references: [id])
   isActive Boolean @default(true)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  vehicles  Vehicle[]
+  trips     Trip[]
+  fuels     Fuel[]
 
   @@map("drivers")
 }
@@ -82,10 +85,220 @@ model Helper {
   user     User    @relation(fields: [userId], references: [id])
   isActive Boolean @default(true)
 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  vehicles  Vehicle[]
+  trips     Trip[]
+
+  @@map("helpers")
+}
+
+model Brand {
+  id    String @id @default(uuid())
+  label String @unique
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  vehicles  Vehicle[]
+
+  @@map("brands")
+}
+
+model Model {
+  id    String @id @default(uuid())
+  label String @unique
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  vehicles  Vehicle[]
+
+  @@map("models")
+}
+
+model Vehicle {
+  id           String  @id @default(uuid())
+  regNo        String  @unique
+  brandId      String
+  brand        Brand   @relation(fields: [brandId], references: [id])
+  modelId      String
+  model        Model   @relation(fields: [modelId], references: [id])
+  vehicleValue Int
+  driverId     String?
+  driver       Driver? @relation(fields: [driverId], references: [id])
+  helperId     String?
+  helper       Helper? @relation(fields: [helperId], references: [id])
+  isActive     Boolean @default(true)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  trips     Trip[]
+  expenses  Expense[]
+  fuels     Fuel[]
+
+  @@map("vehicles")
+}
+
+model Party {
+  id       String  @id @default(uuid())
+  partyId  String  @unique
+  fullName String
+  mobile   String  @unique
+  address  String?
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  trips     Trip[]
+
+  @@map("parties")
+}
+
+model Trip {
+  id            String      @id @default(uuid())
+  tripNo        String      @unique
+  startDate     DateTime
+  endDate       DateTime?
+  from          String
+  to            String
+  odometerStart Int?
+  odometerEnd   Int?
+  distance      Int?
+  amount        Int
+  accountHeadId String
+  accountHead   AccountHead @relation(fields: [accountHeadId], references: [id])
+  vehicleId     String
+  vehicle       Vehicle     @relation(fields: [vehicleId], references: [id])
+  driverId      String
+  driver        Driver      @relation(fields: [driverId], references: [id])
+  helperId      String?
+  helper        Helper?     @relation(fields: [helperId], references: [id])
+  partyId       String
+  party         Party       @relation(fields: [partyId], references: [id])
+  status        TripStatus  @default(Pending)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  expenses  Expense[]
+
+  @@map("trips")
+}
+
+model AccountType {
+  id    String @id @default(uuid())
+  label String @unique
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  accountHeads AccountHead[]
+
+  @@map("accountTypes")
+}
+
+model AccountHead {
+  id            String      @id @default(uuid())
+  accountTypeId String
+  accountType   AccountType @relation(fields: [accountTypeId], references: [id])
+  label         String      @unique
+
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  expenseHeads     ExpenseHead[]
+  maintenanceHeads MaintenanceHead[]
+  trips            Trip[]
+  expenses         Expense[]
+
+  @@map("accountHeads")
+}
+
+model ExpenseHead {
+  id            String      @id @default(uuid())
+  accountHeadId String
+  accountHead   AccountHead @relation(fields: [accountHeadId], references: [id])
+  label         String      @unique
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  expenses  Expense[]
+
+  @@map("expenseHeads")
+}
+
+model MaintenanceHead {
+  id            String      @id @default(uuid())
+  accountHeadId String
+  accountHead   AccountHead @relation(fields: [accountHeadId], references: [id])
+  label         String      @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("helpers")
+  @@map("maintenanceHeads")
+}
+
+model Expense {
+  id            String      @id @default(uuid())
+  date          DateTime
+  vehicleId     String
+  vehicle       Vehicle     @relation(fields: [vehicleId], references: [id])
+  tripId        String?
+  trip          Trip?       @relation(fields: [tripId], references: [id])
+  accoutHeadId  String
+  accountHead   AccountHead @relation(fields: [accoutHeadId], references: [id])
+  expenseHeadId String
+  expenseHead   ExpenseHead @relation(fields: [expenseHeadId], references: [id])
+  amount        Int
+  remarks       String?
+  isMisc        Boolean     @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("expenses")
+}
+
+model FuelType {
+  id    String @id @default(uuid())
+  label String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  fuels     Fuel[]
+
+  @@map("fuelTypes")
+}
+
+model FuelStation {
+  id      String  @id @default(uuid())
+  label   String
+  address String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  fuels     Fuel[]
+
+  @@map("fuelStations")
+}
+
+model Fuel {
+  id            String       @id @default(uuid())
+  date          DateTime
+  fuelTypeId    String
+  fuelType      FuelType     @relation(fields: [fuelTypeId], references: [id])
+  vehicleId     String
+  vehicle       Vehicle      @relation(fields: [vehicleId], references: [id])
+  driverId      String?
+  driver        Driver?      @relation(fields: [driverId], references: [id])
+  fuelStationId String?
+  fuelStation   FuelStation? @relation(fields: [fuelStationId], references: [id])
+  odometer      Int?
+  quantity      Float
+  amount        Int
+  remarks       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("fuels")
 }
 
 // enum
@@ -94,4 +307,10 @@ enum UserRole {
   admin
   driver
   helper
+}
+
+enum TripStatus {
+  Pending
+  Running
+  Completed
 }
