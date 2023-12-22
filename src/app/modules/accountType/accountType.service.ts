@@ -1,16 +1,16 @@
 import httpStatus from 'http-status';
 import prisma from '../../../shared/prisma';
-import { Model, Prisma } from '@prisma/client';
+import { AccountType, Prisma } from '@prisma/client';
 import ApiError from '../../../errors/ApiError';
-import { IModelFilters } from './model.interface';
+import { IAccountTypeFilters } from './accountType.interface';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { modelSearchableFields } from './model.constant';
+import { accountTypeSearchableFields } from './accountType.constant';
 
 // create
-const create = async (data: Model): Promise<Model | null> => {
-  const result = await prisma.model.create({ data });
+const create = async (data: AccountType): Promise<AccountType | null> => {
+  const result = await prisma.accountType.create({ data });
 
   if (!result) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Create');
@@ -21,10 +21,10 @@ const create = async (data: Model): Promise<Model | null> => {
 
 // get all
 const getAll = async (
-  filters: IModelFilters,
+  filters: IAccountTypeFilters,
   paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<Model[]>> => {
-  const { searchTerm, brandId } = filters;
+): Promise<IGenericResponse<AccountType[]>> => {
+  const { searchTerm } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -32,7 +32,7 @@ const getAll = async (
 
   if (searchTerm) {
     andConditions.push({
-      OR: modelSearchableFields.map(field => ({
+      OR: accountTypeSearchableFields.map(field => ({
         [field]: {
           contains: searchTerm,
           mode: 'insensitive',
@@ -41,16 +41,10 @@ const getAll = async (
     });
   }
 
-  if (brandId) {
-    andConditions.push({
-      brandId,
-    });
-  }
-
-  const whereConditions: Prisma.ModelWhereInput =
+  const whereConditions: Prisma.AccountTypeWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  const result = await prisma.model.findMany({
+  const result = await prisma.accountType.findMany({
     where: whereConditions,
     orderBy: {
       [sortBy]: sortOrder,
@@ -59,7 +53,7 @@ const getAll = async (
     take: limit,
   });
 
-  const total = await prisma.model.count({
+  const total = await prisma.accountType.count({
     where: whereConditions,
   });
   const totalPage = Math.ceil(total / limit);
@@ -76,8 +70,8 @@ const getAll = async (
 };
 
 // get single
-const getSingle = async (id: string): Promise<Model | null> => {
-  const result = await prisma.model.findUnique({
+const getSingle = async (id: string): Promise<AccountType | null> => {
+  const result = await prisma.accountType.findUnique({
     where: {
       id,
     },
@@ -89,20 +83,20 @@ const getSingle = async (id: string): Promise<Model | null> => {
 // update single
 const updateSingle = async (
   id: string,
-  payload: Partial<Model>
-): Promise<Model | null> => {
+  payload: Partial<AccountType>
+): Promise<AccountType | null> => {
   // check is exist
-  const isExist = await prisma.model.findUnique({
+  const isExist = await prisma.accountType.findUnique({
     where: {
       id,
     },
   });
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Model Not Found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'AccountType Not Found');
   }
 
-  const result = await prisma.model.update({
+  const result = await prisma.accountType.update({
     where: {
       id,
     },
@@ -110,13 +104,13 @@ const updateSingle = async (
   });
 
   if (!result) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Update Model');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Update AccountType');
   }
 
   return result;
 };
 
-export const ModelService = {
+export const AccountTypeService = {
   create,
   getAll,
   getSingle,

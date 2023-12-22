@@ -107,13 +107,16 @@ model Brand {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   vehicles  Vehicle[]
+  models    Model[]
 
   @@map("brands")
 }
 
 model Model {
-  id    String @id @default(uuid())
-  label String @unique
+  id      String @id @default(uuid())
+  brandId String
+  brand   Brand  @relation(fields: [brandId], references: [id])
+  label   String @unique
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

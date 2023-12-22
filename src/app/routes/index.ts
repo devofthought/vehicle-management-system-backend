@@ -8,6 +8,8 @@ import { UserRoutes } from '../modules/user/user.route';
 import { BrandRoutes } from '../modules/brand/brand.route';
 import { ModelRoutes } from '../modules/model/model.route';
 import { VehicleRoutes } from '../modules/vehicle/vehicle.route';
+import { PartyRoutes } from '../modules/Party/party.route';
+import { AccountTypeRoutes } from '../modules/accountType/accountType.route';
 
 const router = express.Router();
 
@@ -47,6 +49,14 @@ const moduleRoutes = [
   {
     path: '/vehicle',
     route: VehicleRoutes,
+  },
+  {
+    path: '/party',
+    route: PartyRoutes,
+  },
+  {
+    path: '/account-type',
+    route: AccountTypeRoutes,
   },
 ];
 

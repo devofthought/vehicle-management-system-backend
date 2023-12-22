@@ -1,3 +1,3 @@
 export const modelSearchableFields = ['label'];
 
-export const modelFilterableFields = ['searchTerm'];
+export const modelFilterableFields = ['searchTerm', 'brandId'];
