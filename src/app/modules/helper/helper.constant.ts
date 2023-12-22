@@ -3,6 +3,7 @@ export const helperSearchableFields = [
   'fullName',
   'mobile',
   'address',
+  'bloodGroup',
 ];
 
 export const helperFilterableFields = ['searchTerm', 'isActive'];

@@ -1,16 +1,16 @@
 import httpStatus from 'http-status';
 import prisma from '../../../shared/prisma';
-import { Brand, Prisma } from '@prisma/client';
+import { Model, Prisma } from '@prisma/client';
 import ApiError from '../../../errors/ApiError';
-import { IBrandFilters } from './brand.interface';
+import { IModelFilters } from './model.interface';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { brandSearchableFields } from './brand.constant';
+import { modelSearchableFields } from './model.constant';
 
 // create
-const create = async (data: Brand): Promise<Brand | null> => {
-  const result = await prisma.brand.create({ data });
+const create = async (data: Model): Promise<Model | null> => {
+  const result = await prisma.model.create({ data });
 
   if (!result) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Create');
@@ -21,9 +21,9 @@ const create = async (data: Brand): Promise<Brand | null> => {
 
 // get all
 const getAll = async (
-  filters: IBrandFilters,
+  filters: IModelFilters,
   paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<Brand[]>> => {
+): Promise<IGenericResponse<Model[]>> => {
   const { searchTerm } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
@@ -32,7 +32,7 @@ const getAll = async (
 
   if (searchTerm) {
     andConditions.push({
-      OR: brandSearchableFields.map(field => ({
+      OR: modelSearchableFields.map(field => ({
         [field]: {
           contains: searchTerm,
           mode: 'insensitive',
@@ -41,10 +41,10 @@ const getAll = async (
     });
   }
 
-  const whereConditions: Prisma.BrandWhereInput =
+  const whereConditions: Prisma.ModelWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  const result = await prisma.brand.findMany({
+  const result = await prisma.model.findMany({
     where: whereConditions,
     orderBy: {
       [sortBy]: sortOrder,
@@ -53,7 +53,7 @@ const getAll = async (
     take: limit,
   });
 
-  const total = await prisma.brand.count({
+  const total = await prisma.model.count({
     where: whereConditions,
   });
   const totalPage = Math.ceil(total / limit);
@@ -70,8 +70,8 @@ const getAll = async (
 };
 
 // get single
-const getSingle = async (id: string): Promise<Brand | null> => {
-  const result = await prisma.brand.findUnique({
+const getSingle = async (id: string): Promise<Model | null> => {
+  const result = await prisma.model.findUnique({
     where: {
       id,
     },
@@ -83,20 +83,20 @@ const getSingle = async (id: string): Promise<Brand | null> => {
 // update single
 const updateSingle = async (
   id: string,
-  payload: Partial<Brand>
-): Promise<Brand | null> => {
+  payload: Partial<Model>
+): Promise<Model | null> => {
   // check is exist
-  const isExist = await prisma.brand.findUnique({
+  const isExist = await prisma.model.findUnique({
     where: {
       id,
     },
   });
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Brand Not Found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Model Not Found');
   }
 
-  const result = await prisma.brand.update({
+  const result = await prisma.model.update({
     where: {
       id,
     },
@@ -104,13 +104,13 @@ const updateSingle = async (
   });
 
   if (!result) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Update Brand');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Update Model');
   }
 
   return result;
 };
 
-export const BrandService = {
+export const ModelService = {
   create,
   getAll,
   getSingle,

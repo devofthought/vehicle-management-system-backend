@@ -5,6 +5,9 @@ import { DriverRoutes } from '../modules/driver/driver.route';
 import { HelperRoutes } from '../modules/helper/helper.route';
 import { AuthRoutes } from '../modules/auth/auth.route';
 import { UserRoutes } from '../modules/user/user.route';
+import { BrandRoutes } from '../modules/brand/brand.route';
+import { ModelRoutes } from '../modules/model/model.route';
+import { VehicleRoutes } from '../modules/vehicle/vehicle.route';
 
 const router = express.Router();
 
@@ -32,6 +35,18 @@ const moduleRoutes = [
   {
     path: '/helper',
     route: HelperRoutes,
+  },
+  {
+    path: '/brand',
+    route: BrandRoutes,
+  },
+  {
+    path: '/model',
+    route: ModelRoutes,
+  },
+  {
+    path: '/vehicle',
+    route: VehicleRoutes,
   },
 ];
 

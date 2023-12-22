@@ -27,13 +27,14 @@ model User {
 }
 
 model SuperAdmin {
-  id       String  @id @default(uuid())
-  fullName String
-  mobile   String  @unique
-  address  String?
-  userId   String  @unique
-  user     User    @relation(fields: [userId], references: [id])
-  isActive Boolean @default(true)
+  id         String  @id @default(uuid())
+  fullName   String
+  mobile     String  @unique
+  address    String?
+  profileImg String?
+  userId     String  @unique
+  user       User    @relation(fields: [userId], references: [id])
+  isActive   Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -42,13 +43,14 @@ model SuperAdmin {
 }
 
 model Admin {
-  id       String  @id @default(uuid())
-  fullName String
-  mobile   String  @unique
-  address  String?
-  userId   String  @unique
-  user     User    @relation(fields: [userId], references: [id])
-  isActive Boolean @default(true)
+  id         String  @id @default(uuid())
+  fullName   String
+  mobile     String  @unique
+  address    String?
+  profileImg String?
+  userId     String  @unique
+  user       User    @relation(fields: [userId], references: [id])
+  isActive   Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -57,14 +59,17 @@ model Admin {
 }
 
 model Driver {
-  id       String  @id @default(uuid())
-  driverId String  @unique
-  fullName String
-  mobile   String  @unique
-  address  String?
-  userId   String  @unique
-  user     User    @relation(fields: [userId], references: [id])
-  isActive Boolean @default(true)
+  id         String  @id @default(uuid())
+  driverId   String  @unique
+  fullName   String
+  mobile     String  @unique
+  address    String?
+  licenseNo  String?
+  bloodGroup String?
+  profileImg String?
+  userId     String  @unique
+  user       User    @relation(fields: [userId], references: [id])
+  isActive   Boolean @default(true)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -76,14 +81,16 @@ model Driver {
 }
 
 model Helper {
-  id       String  @id @default(uuid())
-  helperId String  @unique
-  fullName String
-  mobile   String  @unique
-  address  String?
-  userId   String  @unique
-  user     User    @relation(fields: [userId], references: [id])
-  isActive Boolean @default(true)
+  id         String  @id @default(uuid())
+  helperId   String  @unique
+  fullName   String
+  mobile     String  @unique
+  address    String?
+  bloodGroup String?
+  profileImg String?
+  userId     String  @unique
+  user       User    @relation(fields: [userId], references: [id])
+  isActive   Boolean @default(true)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -127,6 +134,7 @@ model Vehicle {
   driver       Driver? @relation(fields: [driverId], references: [id])
   helperId     String?
   helper       Helper? @relation(fields: [helperId], references: [id])
+  imageUrl     String?
   isActive     Boolean @default(true)
 
   createdAt DateTime  @default(now())
@@ -302,6 +310,7 @@ model Fuel {
 }
 
 // enum
+
 enum UserRole {
   super_admin
   admin

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { bloodGroup } from '../../../constants/bloodGroup';
 
 const createSuperAdmin = z.object({
   body: z.object({
@@ -8,6 +9,7 @@ const createSuperAdmin = z.object({
       fullName: z.string({ required_error: 'Full Name is Required' }),
       mobile: z.string({ required_error: 'Mobile No is Required' }),
       address: z.string().optional(),
+      profileImg: z.string().optional(),
     }),
   }),
 });
@@ -20,6 +22,7 @@ const createAdmin = z.object({
       fullName: z.string({ required_error: 'Full Name is Required' }),
       mobile: z.string({ required_error: 'Mobile No is Required' }),
       address: z.string().optional(),
+      profileImg: z.string().optional(),
     }),
   }),
 });
@@ -32,6 +35,9 @@ const createDriver = z.object({
       fullName: z.string({ required_error: 'Full Name is Required' }),
       mobile: z.string({ required_error: 'Mobile No is Required' }),
       address: z.string().optional(),
+      licenseNo: z.string().optional(),
+      bloodGroup: z.enum(bloodGroup as [string, ...string[]]).optional(),
+      profileImg: z.string().optional(),
     }),
   }),
 });
@@ -44,6 +50,8 @@ const createHelper = z.object({
       fullName: z.string({ required_error: 'Full Name is Required' }),
       mobile: z.string({ required_error: 'Mobile No is Required' }),
       address: z.string().optional(),
+      bloodGroup: z.enum(bloodGroup as [string, ...string[]]).optional(),
+      profileImg: z.string().optional(),
     }),
   }),
 });
