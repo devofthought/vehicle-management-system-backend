@@ -10,6 +10,7 @@ import { ModelRoutes } from '../modules/model/model.route';
 import { VehicleRoutes } from '../modules/vehicle/vehicle.route';
 import { PartyRoutes } from '../modules/Party/party.route';
 import { AccountTypeRoutes } from '../modules/accountType/accountType.route';
+import { AccountHeadRoutes } from '../modules/accountHead/accountHead.route';
 
 const router = express.Router();
 
@@ -57,6 +58,10 @@ const moduleRoutes = [
   {
     path: '/account-type',
     route: AccountTypeRoutes,
+  },
+  {
+    path: '/account-head',
+    route: AccountHeadRoutes,
   },
 ];
 
