@@ -21,6 +21,7 @@ import { UomRoutes } from '../modules/uom/Uom.route';
 import { EquipmentRoutes } from '../modules/equipment/equipment.route';
 import { EquipmentInRoutes } from '../modules/equipmentIn/equipmentIn.route';
 import { AccidentHistoryRoutes } from '../modules/accidentHistory/accidentHistory.route';
+import { PaperWorkRoutes } from '../modules/paperWork/paperWork.route';
 
 const router = express.Router();
 
@@ -112,6 +113,10 @@ const moduleRoutes = [
   {
     path: '/accident-history',
     route: AccidentHistoryRoutes,
+  },
+  {
+    path: '/paper-work',
+    route: PaperWorkRoutes,
   },
 ];
 
