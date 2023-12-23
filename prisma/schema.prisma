@@ -71,11 +71,13 @@ model Driver {
   user       User    @relation(fields: [userId], references: [id])
   isActive   Boolean @default(true)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  vehicles  Vehicle[]
-  trips     Trip[]
-  fuels     Fuel[]
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  vehicles          Vehicle[]
+  trips             Trip[]
+  fuels             Fuel[]
+  maintenances      Maintenance[]
+  accidentHistories AccidentHistory[]
 
   @@map("drivers")
 }
@@ -140,11 +142,14 @@ model Vehicle {
   imageUrl     String?
   isActive     Boolean @default(true)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  trips     Trip[]
-  expenses  Expense[]
-  fuels     Fuel[]
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  trips             Trip[]
+  expenses          Expense[]
+  fuels             Fuel[]
+  maintenances      Maintenance[]
+  accidentHistories AccidentHistory[]
+  paperWorks        PaperWork[]
 
   @@map("vehicles")
 }
@@ -249,12 +254,12 @@ model MaintenanceHead {
 model Expense {
   id            String      @id @default(uuid())
   date          DateTime
-  vehicleId     String
-  vehicle       Vehicle     @relation(fields: [vehicleId], references: [id])
+  vehicleId     String?
+  vehicle       Vehicle?    @relation(fields: [vehicleId], references: [id])
   tripId        String?
   trip          Trip?       @relation(fields: [tripId], references: [id])
-  accoutHeadId  String
-  accountHead   AccountHead @relation(fields: [accoutHeadId], references: [id])
+  accountHeadId String
+  accountHead   AccountHead @relation(fields: [accountHeadId], references: [id])
   expenseHeadId String
   expenseHead   ExpenseHead @relation(fields: [expenseHeadId], references: [id])
   amount        Int
@@ -312,6 +317,139 @@ model Fuel {
   @@map("fuels")
 }
 
+model Uom {
+  id    String @id @default(uuid())
+  label String
+
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  equipments Equipment[]
+
+  @@map("uoms")
+}
+
+model Equipment {
+  id    String @id @default(uuid())
+  label String
+  uomId String
+  uom   Uom    @relation(fields: [uomId], references: [id])
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  equipmentIns  EquipmentIn[]
+  equipmentUses EquipmentUse[]
+
+  @@map("equipments")
+}
+
+model EquipmentIn {
+  id          String    @id @default(uuid())
+  date        DateTime
+  equipmentId String
+  equipment   Equipment @relation(fields: [equipmentId], references: [id])
+  quantity    Float
+  unitPrice   Float
+  totalPrice  Float
+  remarks     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("equipmentIns")
+}
+
+model Maintenance {
+  id     String   @id @default(uuid())
+  date   DateTime
+  billNo String   @unique
+
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+
+  driverId String?
+  driver   Driver? @relation(fields: [driverId], references: [id])
+
+  odoMeter        Int?
+  workshopType    Workshop
+  maintenanceType MaintenanceType
+  workshopDetails String?
+  serviceCharge   Int
+  remarks         String?
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  equipmentUses EquipmentUse[]
+
+  @@map("maintenances")
+}
+
+model EquipmentUse {
+  id            String      @id @default(uuid())
+  date          DateTime
+  maintenanceId String
+  maintenance   Maintenance @relation(fields: [maintenanceId], references: [id])
+  equipmentId   String
+  equipment     Equipment   @relation(fields: [equipmentId], references: [id])
+  quantity      Float
+  unitPrice     Float
+  totalPrice    Float
+  remarks       String?
+  inHouse       Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("equipmentUses")
+}
+
+model AccidentHistory {
+  id   String   @id @default(uuid())
+  date DateTime
+
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+
+  driverId String
+  driver   Driver @relation(fields: [driverId], references: [id])
+
+  details String
+
+  location      String
+  odoMeter      Int?
+  paymentStatus AccidentPaymentStatus
+  amount        Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("accidentHistories")
+}
+
+model PaperWork {
+  id   String   @id @default(uuid())
+  date DateTime
+
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+
+  certificateNo String
+  effectiveDate DateTime
+  expiryDate    DateTime?
+  daysToRemind  Int?
+
+  odoMeter    Int?
+  paperType   PaperType
+  fee         Int
+  otherAmount Int?
+  totalAmount Int
+  remarks     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("paperWorks")
+}
+
 // enum
 
 enum UserRole {
@@ -325,4 +463,29 @@ enum TripStatus {
   Pending
   Running
   Completed
+}
+
+enum Workshop {
+  InHouse
+  External
+}
+
+enum MaintenanceType {
+  Scheduled
+  Unscheduled
+  Accidental
+  Others
+}
+
+enum AccidentPaymentStatus {
+  Paid
+  Received
+  Nothing
+}
+
+enum PaperType {
+  Registration
+  Tax
+  Fitness
+  Route
 }

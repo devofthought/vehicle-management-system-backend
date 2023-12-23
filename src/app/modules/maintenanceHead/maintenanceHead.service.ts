@@ -1,16 +1,18 @@
 import httpStatus from 'http-status';
 import prisma from '../../../shared/prisma';
-import { AccountType, Prisma } from '@prisma/client';
+import { MaintenanceHead, Prisma } from '@prisma/client';
 import ApiError from '../../../errors/ApiError';
-import { IAccountTypeFilters } from './accountType.interface';
+import { IMaintenanceHeadFilters } from './maintenanceHead.interface';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { accountTypeSearchableFields } from './accountType.constant';
+import { maintenanceHeadSearchableFields } from './maintenanceHead.constant';
 
 // create
-const create = async (data: AccountType): Promise<AccountType | null> => {
-  const result = await prisma.accountType.create({ data });
+const create = async (
+  data: MaintenanceHead
+): Promise<MaintenanceHead | null> => {
+  const result = await prisma.maintenanceHead.create({ data });
 
   if (!result) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Create');
@@ -21,10 +23,10 @@ const create = async (data: AccountType): Promise<AccountType | null> => {
 
 // get all
 const getAll = async (
-  filters: IAccountTypeFilters,
+  filters: IMaintenanceHeadFilters,
   paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<AccountType[]>> => {
-  const { searchTerm } = filters;
+): Promise<IGenericResponse<MaintenanceHead[]>> => {
+  const { searchTerm, accountHeadId } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -32,7 +34,7 @@ const getAll = async (
 
   if (searchTerm) {
     andConditions.push({
-      OR: accountTypeSearchableFields.map(field => ({
+      OR: maintenanceHeadSearchableFields.map(field => ({
         [field]: {
           contains: searchTerm,
           mode: 'insensitive',
@@ -41,10 +43,16 @@ const getAll = async (
     });
   }
 
-  const whereConditions: Prisma.AccountTypeWhereInput =
+  if (accountHeadId) {
+    andConditions.push({
+      accountHeadId,
+    });
+  }
+
+  const whereConditions: Prisma.MaintenanceHeadWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  const result = await prisma.accountType.findMany({
+  const result = await prisma.maintenanceHead.findMany({
     where: whereConditions,
     orderBy: {
       [sortBy]: sortOrder,
@@ -53,7 +61,7 @@ const getAll = async (
     take: limit,
   });
 
-  const total = await prisma.accountType.count({
+  const total = await prisma.maintenanceHead.count({
     where: whereConditions,
   });
   const totalPage = Math.ceil(total / limit);
@@ -70,8 +78,8 @@ const getAll = async (
 };
 
 // get single
-const getSingle = async (id: string): Promise<AccountType | null> => {
-  const result = await prisma.accountType.findUnique({
+const getSingle = async (id: string): Promise<MaintenanceHead | null> => {
+  const result = await prisma.maintenanceHead.findUnique({
     where: {
       id,
     },
@@ -83,20 +91,20 @@ const getSingle = async (id: string): Promise<AccountType | null> => {
 // update single
 const updateSingle = async (
   id: string,
-  payload: Partial<AccountType>
-): Promise<AccountType | null> => {
+  payload: Partial<MaintenanceHead>
+): Promise<MaintenanceHead | null> => {
   // check is exist
-  const isExist = await prisma.accountType.findUnique({
+  const isExist = await prisma.maintenanceHead.findUnique({
     where: {
       id,
     },
   });
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Account Type Not Found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'MaintenanceHead Not Found');
   }
 
-  const result = await prisma.accountType.update({
+  const result = await prisma.maintenanceHead.update({
     where: {
       id,
     },
@@ -104,13 +112,16 @@ const updateSingle = async (
   });
 
   if (!result) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Update Account Type');
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Failed to Update MaintenanceHead'
+    );
   }
 
   return result;
 };
 
-export const AccountTypeService = {
+export const MaintenanceHeadService = {
   create,
   getAll,
   getSingle,

@@ -10,6 +10,18 @@ import { ModelRoutes } from '../modules/model/model.route';
 import { VehicleRoutes } from '../modules/vehicle/vehicle.route';
 import { PartyRoutes } from '../modules/Party/party.route';
 import { AccountTypeRoutes } from '../modules/accountType/accountType.route';
+import { AccountHeadRoutes } from '../modules/accountHead/accountHead.route';
+import { ExpenseHeadRoutes } from '../modules/expenseHead/expenseHead.route';
+import { MaintenanceHeadRoutes } from '../modules/maintenanceHead/maintenanceHead.route';
+import { ExpenseRoutes } from '../modules/expense/expense.route';
+import { FuelTypeRoutes } from '../modules/fuelType/fuelType.route';
+import { FuelStationRoutes } from '../modules/fuelStation/fuelStation.route';
+import { FuelRoutes } from '../modules/fuel/fuel.route';
+import { UomRoutes } from '../modules/uom/Uom.route';
+import { EquipmentRoutes } from '../modules/equipment/equipment.route';
+import { EquipmentInRoutes } from '../modules/equipmentIn/equipmentIn.route';
+import { AccidentHistoryRoutes } from '../modules/accidentHistory/accidentHistory.route';
+import { PaperWorkRoutes } from '../modules/paperWork/paperWork.route';
 
 const router = express.Router();
 
@@ -57,6 +69,54 @@ const moduleRoutes = [
   {
     path: '/account-type',
     route: AccountTypeRoutes,
+  },
+  {
+    path: '/account-head',
+    route: AccountHeadRoutes,
+  },
+  {
+    path: '/expense-head',
+    route: ExpenseHeadRoutes,
+  },
+  {
+    path: '/maintenance-head',
+    route: MaintenanceHeadRoutes,
+  },
+  {
+    path: '/expense',
+    route: ExpenseRoutes,
+  },
+  {
+    path: '/fuel-type',
+    route: FuelTypeRoutes,
+  },
+  {
+    path: '/fuel-station',
+    route: FuelStationRoutes,
+  },
+  {
+    path: '/fuel',
+    route: FuelRoutes,
+  },
+  {
+    path: '/uom',
+    route: UomRoutes,
+  },
+  {
+    path: '/equipment',
+    route: EquipmentRoutes,
+  },
+  {
+    path: '/equipment-in',
+    route: EquipmentInRoutes,
+  },
+  {
+    path: '/accident-history',
+    route: AccidentHistoryRoutes,
+  },
+  {
+    path: '/paper-work',
+    route: PaperWorkRoutes,
   },
 ];
 

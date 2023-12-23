@@ -1,16 +1,16 @@
 import httpStatus from 'http-status';
 import prisma from '../../../shared/prisma';
-import { AccountType, Prisma } from '@prisma/client';
+import { AccountHead, Prisma } from '@prisma/client';
 import ApiError from '../../../errors/ApiError';
-import { IAccountTypeFilters } from './accountType.interface';
+import { IAccountHeadFilters } from './accountHead.interface';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { accountTypeSearchableFields } from './accountType.constant';
+import { accountHeadSearchableFields } from './accountHead.constant';
 
 // create
-const create = async (data: AccountType): Promise<AccountType | null> => {
-  const result = await prisma.accountType.create({ data });
+const create = async (data: AccountHead): Promise<AccountHead | null> => {
+  const result = await prisma.accountHead.create({ data });
 
   if (!result) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Create');
@@ -21,10 +21,10 @@ const create = async (data: AccountType): Promise<AccountType | null> => {
 
 // get all
 const getAll = async (
-  filters: IAccountTypeFilters,
+  filters: IAccountHeadFilters,
   paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<AccountType[]>> => {
-  const { searchTerm } = filters;
+): Promise<IGenericResponse<AccountHead[]>> => {
+  const { searchTerm, accountTypeId } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -32,7 +32,7 @@ const getAll = async (
 
   if (searchTerm) {
     andConditions.push({
-      OR: accountTypeSearchableFields.map(field => ({
+      OR: accountHeadSearchableFields.map(field => ({
         [field]: {
           contains: searchTerm,
           mode: 'insensitive',
@@ -41,10 +41,16 @@ const getAll = async (
     });
   }
 
-  const whereConditions: Prisma.AccountTypeWhereInput =
+  if (accountTypeId) {
+    andConditions.push({
+      accountTypeId,
+    });
+  }
+
+  const whereConditions: Prisma.AccountHeadWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  const result = await prisma.accountType.findMany({
+  const result = await prisma.accountHead.findMany({
     where: whereConditions,
     orderBy: {
       [sortBy]: sortOrder,
@@ -53,7 +59,7 @@ const getAll = async (
     take: limit,
   });
 
-  const total = await prisma.accountType.count({
+  const total = await prisma.accountHead.count({
     where: whereConditions,
   });
   const totalPage = Math.ceil(total / limit);
@@ -70,8 +76,8 @@ const getAll = async (
 };
 
 // get single
-const getSingle = async (id: string): Promise<AccountType | null> => {
-  const result = await prisma.accountType.findUnique({
+const getSingle = async (id: string): Promise<AccountHead | null> => {
+  const result = await prisma.accountHead.findUnique({
     where: {
       id,
     },
@@ -83,20 +89,20 @@ const getSingle = async (id: string): Promise<AccountType | null> => {
 // update single
 const updateSingle = async (
   id: string,
-  payload: Partial<AccountType>
-): Promise<AccountType | null> => {
+  payload: Partial<AccountHead>
+): Promise<AccountHead | null> => {
   // check is exist
-  const isExist = await prisma.accountType.findUnique({
+  const isExist = await prisma.accountHead.findUnique({
     where: {
       id,
     },
   });
 
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Account Type Not Found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'AccountHead Not Found');
   }
 
-  const result = await prisma.accountType.update({
+  const result = await prisma.accountHead.update({
     where: {
       id,
     },
@@ -104,13 +110,13 @@ const updateSingle = async (
   });
 
   if (!result) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Update Account Type');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to Update AccountHead');
   }
 
   return result;
 };
 
-export const AccountTypeService = {
+export const AccountHeadService = {
   create,
   getAll,
   getSingle,
