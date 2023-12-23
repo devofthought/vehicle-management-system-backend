@@ -13,6 +13,7 @@ import { AccountTypeRoutes } from '../modules/accountType/accountType.route';
 import { AccountHeadRoutes } from '../modules/accountHead/accountHead.route';
 import { ExpenseHeadRoutes } from '../modules/expenseHead/expenseHead.route';
 import { MaintenanceHeadRoutes } from '../modules/maintenanceHead/maintenanceHead.route';
+import { ExpenseRoutes } from '../modules/expense/expense.route';
 
 const router = express.Router();
 
@@ -72,6 +73,10 @@ const moduleRoutes = [
   {
     path: '/maintenance-head',
     route: MaintenanceHeadRoutes,
+  },
+  {
+    path: '/expense',
+    route: ExpenseRoutes,
   },
 ];
 
