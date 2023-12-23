@@ -7,7 +7,7 @@ const create = z.object({
 });
 const update = z.object({
   body: z.object({
-    label: z.string().optional(),
+    label: z.string({ required_error: 'Account Type is Required' }),
   }),
 });
 

@@ -14,6 +14,9 @@ import { AccountHeadRoutes } from '../modules/accountHead/accountHead.route';
 import { ExpenseHeadRoutes } from '../modules/expenseHead/expenseHead.route';
 import { MaintenanceHeadRoutes } from '../modules/maintenanceHead/maintenanceHead.route';
 import { ExpenseRoutes } from '../modules/expense/expense.route';
+import { FuelTypeRoutes } from '../modules/fuelType/fuelType.route';
+import { FuelStationRoutes } from '../modules/fuelStation/fuelStation.route';
+import { FuelRoutes } from '../modules/fuel/fuel.route';
 
 const router = express.Router();
 
@@ -77,6 +80,18 @@ const moduleRoutes = [
   {
     path: '/expense',
     route: ExpenseRoutes,
+  },
+  {
+    path: '/fuel-type',
+    route: FuelTypeRoutes,
+  },
+  {
+    path: '/fuel-station',
+    route: FuelStationRoutes,
+  },
+  {
+    path: '/fuel',
+    route: FuelRoutes,
   },
 ];
 
