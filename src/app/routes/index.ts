@@ -20,6 +20,7 @@ import { FuelRoutes } from '../modules/fuel/fuel.route';
 import { UomRoutes } from '../modules/uom/Uom.route';
 import { EquipmentRoutes } from '../modules/equipment/equipment.route';
 import { EquipmentInRoutes } from '../modules/equipmentIn/equipmentIn.route';
+import { AccidentHistoryRoutes } from '../modules/accidentHistory/accidentHistory.route';
 
 const router = express.Router();
 
@@ -107,6 +108,10 @@ const moduleRoutes = [
   {
     path: '/equipment-in',
     route: EquipmentInRoutes,
+  },
+  {
+    path: '/accident-history',
+    route: AccidentHistoryRoutes,
   },
 ];
 
