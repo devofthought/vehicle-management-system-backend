@@ -11,6 +11,8 @@ import { VehicleRoutes } from '../modules/vehicle/vehicle.route';
 import { PartyRoutes } from '../modules/Party/party.route';
 import { AccountTypeRoutes } from '../modules/accountType/accountType.route';
 import { AccountHeadRoutes } from '../modules/accountHead/accountHead.route';
+import { ExpenseHeadRoutes } from '../modules/expenseHead/expenseHead.route';
+import { MaintenanceHeadRoutes } from '../modules/maintenanceHead/maintenanceHead.route';
 
 const router = express.Router();
 
@@ -62,6 +64,14 @@ const moduleRoutes = [
   {
     path: '/account-head',
     route: AccountHeadRoutes,
+  },
+  {
+    path: '/expense-head',
+    route: ExpenseHeadRoutes,
+  },
+  {
+    path: '/maintenance-head',
+    route: MaintenanceHeadRoutes,
   },
 ];
 
