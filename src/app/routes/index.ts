@@ -17,6 +17,9 @@ import { ExpenseRoutes } from '../modules/expense/expense.route';
 import { FuelTypeRoutes } from '../modules/fuelType/fuelType.route';
 import { FuelStationRoutes } from '../modules/fuelStation/fuelStation.route';
 import { FuelRoutes } from '../modules/fuel/fuel.route';
+import { UomRoutes } from '../modules/uom/Uom.route';
+import { EquipmentRoutes } from '../modules/equipment/equipment.route';
+import { EquipmentInRoutes } from '../modules/equipmentIn/equipmentIn.route';
 
 const router = express.Router();
 
@@ -92,6 +95,18 @@ const moduleRoutes = [
   {
     path: '/fuel',
     route: FuelRoutes,
+  },
+  {
+    path: '/uom',
+    route: UomRoutes,
+  },
+  {
+    path: '/equipment',
+    route: EquipmentRoutes,
+  },
+  {
+    path: '/equipment-in',
+    route: EquipmentInRoutes,
   },
 ];
 
