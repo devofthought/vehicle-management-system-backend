@@ -10,6 +10,16 @@ import { expenseSearchableFields } from './expense.constant';
 
 // create
 const create = async (data: Expense): Promise<Expense | null> => {
+  const findHead = await prisma.accountHead.findFirst({
+    where: { label: 'Miscellaneous Expense' },
+  });
+
+  if (!findHead) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'First setup your account');
+  }
+  data.accountHeadId = findHead.id;
+
+  data.isMisc = true;
   const result = await prisma.expense.create({ data });
 
   if (!result) {

@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 import prisma from '../../../shared/prisma';
-import { AccidentHistory, Prisma } from '@prisma/client';
+import { AccidentHistory, AccidentPaymentStatus, Prisma } from '@prisma/client';
 import ApiError from '../../../errors/ApiError';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IGenericResponse } from '../../../interfaces/common';
@@ -12,6 +12,26 @@ import { accidentHistorySearchableFields } from './accidentHistory.constant';
 const create = async (
   data: AccidentHistory
 ): Promise<AccidentHistory | null> => {
+  // find account head
+  const findIncomeHead = await prisma.accountHead.findFirst({
+    where: { label: 'Accidental Income' },
+  });
+
+  const findExpenseHead = await prisma.accountHead.findFirst({
+    where: { label: 'Accidental Income' },
+  });
+
+  if (!findIncomeHead || !findExpenseHead) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'First setup your account');
+  }
+
+  // set account head
+  if (data.paymentStatus === AccidentPaymentStatus.Received) {
+    data.accountHeadId = findIncomeHead.id;
+  } else if (data.paymentStatus === AccidentPaymentStatus.Paid) {
+    data.accountHeadId = findExpenseHead.id;
+  }
+
   const result = await prisma.accidentHistory.create({
     data,
   });
