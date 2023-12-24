@@ -80,10 +80,26 @@ const deleteSingle = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// update trip expenses
+const updateTripExpense = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const data = req.body;
+
+  const result = await TripService.updateTripExpense(id, data.expenses);
+
+  sendResponse<Trip>(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Trip Expenses Updated Successfully',
+    data: result,
+  });
+});
+
 export const TripController = {
   create,
   getAll,
   getSingle,
   updateSingle,
   deleteSingle,
+  updateTripExpense,
 };

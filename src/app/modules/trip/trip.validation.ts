@@ -42,7 +42,25 @@ const update = z.object({
   }),
 });
 
+const updateTripExpenses = z.object({
+  body: z.object({
+    expenses: z.array(
+      z.object({
+        date: z.string({ required_error: 'Date is required' }),
+        vehicleId: z.string({
+          required_error: 'Vehicle ID is required',
+        }),
+        expenseHeadId: z.string({ required_error: 'Expense head is required' }),
+        amount: z.number({ required_error: 'Amount is required' }),
+        remarks: z.string().optional(),
+      }),
+      { required_error: 'Expenses is required' }
+    ),
+  }),
+});
+
 export const TripValidation = {
   create,
   update,
+  updateTripExpenses,
 };

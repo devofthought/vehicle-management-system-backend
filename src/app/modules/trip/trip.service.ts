@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 import prisma from '../../../shared/prisma';
-import { Prisma, Trip } from '@prisma/client';
+import { Expense, Prisma, Trip } from '@prisma/client';
 import ApiError from '../../../errors/ApiError';
 import { generateTripNo } from './trip.utils';
 import { ITripFilters } from './trip.interface';
@@ -206,10 +206,54 @@ const deleteSingle = async (id: string): Promise<Trip | null> => {
   return result;
 };
 
+const updateTripExpense = async (
+  id: string,
+  payload: Expense[]
+): Promise<Trip | null> => {
+  // check is exist
+  const isExist = await prisma.trip.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Trip Not Found');
+  }
+
+  const result = await prisma.$transaction(async trans => {
+    await trans.trip.update({
+      where: {
+        id,
+      },
+      data: {
+        expenses: {
+          deleteMany: {},
+        },
+      },
+    });
+
+    return await trans.trip.update({
+      where: {
+        id,
+      },
+      data: {
+        ...payload,
+        expenses: {
+          create: payload,
+        },
+      },
+    });
+  });
+
+  return result;
+};
+
 export const TripService = {
   create,
   getAll,
   getSingle,
   updateSingle,
   deleteSingle,
+  updateTripExpense,
 };

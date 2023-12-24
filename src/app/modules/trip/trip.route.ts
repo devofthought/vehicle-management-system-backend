@@ -32,4 +32,12 @@ router.patch(
 // delete single
 router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), TripController.deleteSingle);
 
+// update trip expenses
+router.patch(
+  '/:id/trip-expense',
+  auth(ENUM_USER_ROLE.ADMIN),
+  validateRequest(TripValidation.updateTripExpenses),
+  TripController.updateTripExpense
+);
+
 export const TripRoutes = router;
