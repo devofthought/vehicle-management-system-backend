@@ -10,6 +10,16 @@ import { vehicleSearchableFields } from './vehicle.constant';
 
 // create
 const create = async (data: Vehicle): Promise<Vehicle | null> => {
+  const findHead = await prisma.accountHead.findFirst({
+    where: { label: 'Fixed Asset' },
+  });
+
+  if (!findHead) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'First Setup Your Account');
+  }
+
+  data.accountHeadId = findHead.id;
+
   const result = await prisma.vehicle.create({ data });
 
   if (!result) {

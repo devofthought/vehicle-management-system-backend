@@ -10,6 +10,17 @@ import { paperWorkSearchableFields } from './paperWork.constant';
 
 // create
 const create = async (data: PaperWork): Promise<PaperWork | null> => {
+  // find expense head
+  const findHead = await prisma.accountHead.findFirst({
+    where: { label: 'Paper Expense' },
+  });
+
+  if (!findHead) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'First setup your account');
+  }
+  // set account head
+  data.accountHeadId = findHead.id;
+
   const result = await prisma.paperWork.create({
     data,
   });

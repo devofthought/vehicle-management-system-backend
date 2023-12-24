@@ -22,6 +22,8 @@ import { EquipmentRoutes } from '../modules/equipment/equipment.route';
 import { EquipmentInRoutes } from '../modules/equipmentIn/equipmentIn.route';
 import { AccidentHistoryRoutes } from '../modules/accidentHistory/accidentHistory.route';
 import { PaperWorkRoutes } from '../modules/paperWork/paperWork.route';
+import { MaintenanceRoutes } from '../modules/maintenance/maintenance.route';
+import { TripRoutes } from '../modules/trip/trip.route';
 
 const router = express.Router();
 
@@ -65,6 +67,10 @@ const moduleRoutes = [
   {
     path: '/party',
     route: PartyRoutes,
+  },
+  {
+    path: '/trip',
+    route: TripRoutes,
   },
   {
     path: '/account-type',
@@ -117,6 +123,14 @@ const moduleRoutes = [
   {
     path: '/paper-work',
     route: PaperWorkRoutes,
+  },
+  {
+    path: '/maintenance',
+    route: MaintenanceRoutes,
+  },
+  {
+    path: '/maintenance',
+    route: MaintenanceRoutes,
   },
 ];
 
