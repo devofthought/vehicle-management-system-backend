@@ -85,10 +85,6 @@ const moduleRoutes = [
     route: ExpenseHeadRoutes,
   },
   {
-    path: '/maintenance-head',
-    route: MaintenanceHeadRoutes,
-  },
-  {
     path: '/expense',
     route: ExpenseRoutes,
   },
@@ -117,20 +113,20 @@ const moduleRoutes = [
     route: EquipmentInRoutes,
   },
   {
+    path: '/maintenance-head',
+    route: MaintenanceHeadRoutes,
+  },
+  {
+    path: '/maintenance',
+    route: MaintenanceRoutes,
+  },
+  {
     path: '/accident-history',
     route: AccidentHistoryRoutes,
   },
   {
     path: '/paper-work',
     route: PaperWorkRoutes,
-  },
-  {
-    path: '/maintenance',
-    route: MaintenanceRoutes,
-  },
-  {
-    path: '/maintenance',
-    route: MaintenanceRoutes,
   },
 ];
 
