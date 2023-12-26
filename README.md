@@ -9,6 +9,10 @@
 - api/v1/auth/logout (POST)
 - api/v1/auth/refresh-token (GET)
 
+### Profile
+
+- api/v1/profile (GET)
+
 ### User
 
 - api/v1/user/create-super-admin (POST)
