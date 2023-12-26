@@ -24,6 +24,7 @@ import { AccidentHistoryRoutes } from '../modules/accidentHistory/accidentHistor
 import { PaperWorkRoutes } from '../modules/paperWork/paperWork.route';
 import { MaintenanceRoutes } from '../modules/maintenance/maintenance.route';
 import { TripRoutes } from '../modules/trip/trip.route';
+import { ProfileRoutes } from '../modules/profile/profile.route';
 
 const router = express.Router();
 
@@ -31,6 +32,10 @@ const moduleRoutes = [
   {
     path: '/auth',
     route: AuthRoutes,
+  },
+  {
+    path: '/profile',
+    route: ProfileRoutes,
   },
   {
     path: '/user',
