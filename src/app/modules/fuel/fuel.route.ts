@@ -10,21 +10,49 @@ const router = express.Router();
 // create
 router.post(
   '/create',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.DRIVER,
+    ENUM_USER_ROLE.HELPER
+  ),
   validateRequest(FuelValidation.create),
   FuelController.create
 );
 
 // get all
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), FuelController.getAll);
+router.get(
+  '/',
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.DRIVER,
+    ENUM_USER_ROLE.HELPER
+  ),
+  FuelController.getAll
+);
 
 // get single
-router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), FuelController.getSingle);
+router.get(
+  '/:id',
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.DRIVER,
+    ENUM_USER_ROLE.HELPER
+  ),
+  FuelController.getSingle
+);
 
 // update single
 router.patch(
   '/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.DRIVER,
+    ENUM_USER_ROLE.HELPER
+  ),
   validateRequest(FuelValidation.update),
   FuelController.updateSingle
 );
