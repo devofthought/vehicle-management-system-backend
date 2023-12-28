@@ -8,7 +8,7 @@ import { MaintenanceHeadController } from './maintenanceHead.controller';
 const router = express.Router();
 
 // create
-router.get(
+router.post(
   '/create',
   auth(ENUM_USER_ROLE.ADMIN),
   validateRequest(MaintenanceHeadValidation.create),
