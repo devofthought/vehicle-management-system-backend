@@ -10,7 +10,12 @@ const router = express.Router();
 // create super admin
 router.post(
   '/create-super-admin',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.DRIVER,
+    ENUM_USER_ROLE.HELPER
+  ),
   validateRequest(UserValidation.createSuperAdmin),
   UserController.createSuperAdmin
 );
@@ -18,7 +23,12 @@ router.post(
 // create admin
 router.post(
   '/create-admin',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.DRIVER,
+    ENUM_USER_ROLE.HELPER
+  ),
   validateRequest(UserValidation.createAdmin),
   UserController.createAdmin
 );
@@ -26,7 +36,12 @@ router.post(
 // create driver
 router.post(
   '/create-driver',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.DRIVER,
+    ENUM_USER_ROLE.HELPER
+  ),
   validateRequest(UserValidation.createDriver),
   UserController.createDriver
 );
@@ -34,7 +49,12 @@ router.post(
 // create helper
 router.post(
   '/create-helper',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.DRIVER,
+    ENUM_USER_ROLE.HELPER
+  ),
   validateRequest(UserValidation.createHelper),
   UserController.createHelper
 );
