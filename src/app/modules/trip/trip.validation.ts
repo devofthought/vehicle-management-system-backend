@@ -15,7 +15,7 @@ const create = z.object({
     remarks: z.string().optional(),
     vehicleId: z.string({ required_error: 'Vehicle ID is Required' }),
     driverId: z.string({ required_error: 'Driver ID is Required' }),
-    helperId: z.string({ required_error: 'Helper ID is Required' }),
+    helperId: z.string().optional(),
     partyId: z.string({ required_error: 'Party ID is Required' }),
     status: z.string().optional(),
   }),

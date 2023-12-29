@@ -7,7 +7,8 @@ const create = z.object({
     modelId: z.string({ required_error: 'Model ID is required' }),
     vehicleValue: z.number({ required_error: 'Vehicle Value is required' }),
     driverId: z.string({ required_error: 'Driver ID is required' }),
-    helperId: z.string({ required_error: 'Helper ID is required' }),
+    helperId: z.string().optional(),
+    imageUrl: z.string().optional(),
     isActive: z.boolean().optional().default(true),
   }),
 });
@@ -20,6 +21,7 @@ const update = z.object({
     vehicleValue: z.number().optional(),
     driverId: z.string().optional(),
     helperId: z.string().optional(),
+    imageUrl: z.string().optional(),
     isActive: z.boolean().optional(),
   }),
 });
