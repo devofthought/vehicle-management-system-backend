@@ -6,7 +6,7 @@ const create = z.object({
     vehicleId: z.string().optional(),
     expenseHeadId: z.string({ required_error: 'Expense Head is required' }),
     amount: z.number({ required_error: 'Amount is Required' }),
-    remarks: z.number().optional(),
+    remarks: z.string().optional(),
   }),
 });
 
@@ -16,7 +16,7 @@ const update = z.object({
     vehicleId: z.string().optional(),
     expenseHeadId: z.string().optional(),
     amount: z.number().optional(),
-    remarks: z.number().optional(),
+    remarks: z.string().optional(),
   }),
 });
 
