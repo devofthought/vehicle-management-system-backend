@@ -85,7 +85,7 @@ const updateTripExpense = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const data = req.body;
 
-  const result = await TripService.updateTripExpense(id, data.expenses);
+  const result = await TripService.updateTripExpense(id, data.expenses || []);
 
   sendResponse<Trip>(res, {
     success: true,

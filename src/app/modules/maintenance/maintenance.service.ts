@@ -178,7 +178,7 @@ const updateSingle = async (
   }
 
   const result = await prisma.$transaction(async trans => {
-    if (equipmentUses.length) {
+    if (equipmentUses?.length) {
       // find equipment expense head
       const findEquipmentHead = await prisma.accountHead.findFirst({
         where: { label: 'Equipment Expense' },
