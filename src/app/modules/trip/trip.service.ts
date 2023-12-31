@@ -221,6 +221,19 @@ const updateTripExpense = async (
     throw new ApiError(httpStatus.NOT_FOUND, 'Trip Not Found');
   }
 
+  const findHead = await prisma.accountHead.findFirst({
+    where: { label: 'Trip Expense' },
+  });
+
+  if (!findHead) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'First setup your account');
+  }
+
+  const updatedData = payload?.map(el => ({
+    ...el,
+    accountHeadId: findHead.id,
+  }));
+
   const result = await prisma.$transaction(async trans => {
     await trans.trip.update({
       where: {
@@ -238,9 +251,8 @@ const updateTripExpense = async (
         id,
       },
       data: {
-        ...payload,
         expenses: {
-          create: payload,
+          create: updatedData,
         },
       },
     });

@@ -60,7 +60,7 @@ const updateSingle = catchAsync(async (req: Request, res: Response) => {
   const result = await MaintenanceService.updateSingle(
     id,
     otherData,
-    equipmentUses
+    equipmentUses || []
   );
 
   sendResponse<Maintenance>(res, {
