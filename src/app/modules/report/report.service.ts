@@ -116,6 +116,7 @@ const stockStatus = async (
     skip,
     take: limit,
     include: {
+      uom: true,
       equipmentIns: {
         select: {
           quantity: true,
