@@ -23,6 +23,7 @@ const balanceSheet = async (): Promise<AccountHead[]> => {
       expenses: {
         select: {
           amount: true,
+          isMisc: true,
         },
       },
       vehicles: {
@@ -42,6 +43,7 @@ const balanceSheet = async (): Promise<AccountHead[]> => {
       },
       accidentHistories: {
         select: {
+          paymentStatus: true,
           amount: true,
         },
       },
