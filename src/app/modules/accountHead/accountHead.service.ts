@@ -57,6 +57,9 @@ const getAll = async (
     },
     skip,
     take: limit,
+    include: {
+      accountType: true,
+    },
   });
 
   const total = await prisma.accountHead.count({
@@ -80,6 +83,9 @@ const getSingle = async (id: string): Promise<AccountHead | null> => {
   const result = await prisma.accountHead.findUnique({
     where: {
       id,
+    },
+    include: {
+      accountType: true,
     },
   });
 
