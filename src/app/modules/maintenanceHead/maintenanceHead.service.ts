@@ -26,7 +26,7 @@ const getAll = async (
   filters: IMaintenanceHeadFilters,
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<MaintenanceHead[]>> => {
-  const { searchTerm, accountHeadId } = filters;
+  const { searchTerm } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -40,12 +40,6 @@ const getAll = async (
           mode: 'insensitive',
         },
       })),
-    });
-  }
-
-  if (accountHeadId) {
-    andConditions.push({
-      accountHeadId,
     });
   }
 

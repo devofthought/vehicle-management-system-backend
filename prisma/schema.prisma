@@ -225,8 +225,6 @@ model AccountHead {
 
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
-  expenseHeads      ExpenseHead[]
-  maintenanceHeads  MaintenanceHead[]
   trips             Trip[]
   expenses          Expense[]
   vehicles          Vehicle[]
@@ -239,10 +237,9 @@ model AccountHead {
 }
 
 model ExpenseHead {
-  id            String      @id @default(uuid())
-  accountHeadId String
-  accountHead   AccountHead @relation(fields: [accountHeadId], references: [id])
-  label         String      @unique
+  id            String  @id @default(uuid())
+  label         String  @unique
+  isTripExpense Boolean @default(false)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -252,10 +249,8 @@ model ExpenseHead {
 }
 
 model MaintenanceHead {
-  id            String      @id @default(uuid())
-  accountHeadId String
-  accountHead   AccountHead @relation(fields: [accountHeadId], references: [id])
-  label         String      @unique
+  id    String @id @default(uuid())
+  label String @unique
 
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt

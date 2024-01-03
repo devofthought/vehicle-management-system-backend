@@ -24,7 +24,7 @@ const getAll = async (
   filters: IExpenseHeadFilters,
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<ExpenseHead[]>> => {
-  const { searchTerm, accountHeadId } = filters;
+  const { searchTerm, isTripExpense } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -41,9 +41,9 @@ const getAll = async (
     });
   }
 
-  if (accountHeadId) {
+  if (isTripExpense) {
     andConditions.push({
-      accountHeadId,
+      isTripExpense: isTripExpense === 'true' ? true : false,
     });
   }
 
