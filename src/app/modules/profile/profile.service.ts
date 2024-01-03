@@ -10,8 +10,21 @@ const getProfile = async (id: string): Promise<User | null> => {
     include: {
       superAdmin: true,
       admin: true,
-      driver: true,
-      helper: true,
+      driver: {
+        include: {
+          vehicles: true,
+          trips: true,
+          fuels: true,
+          maintenances: true,
+          accidentHistories: true,
+        },
+      },
+      helper: {
+        include: {
+          vehicles: true,
+          trips: true,
+        },
+      },
     },
   });
 
