@@ -81,6 +81,9 @@ const getSingle = async (id: string): Promise<Model | null> => {
     where: {
       id,
     },
+    include: {
+      brand: true,
+    },
   });
 
   return result;
