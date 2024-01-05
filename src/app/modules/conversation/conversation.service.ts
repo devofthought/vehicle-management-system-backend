@@ -79,22 +79,8 @@ export const createConversationToDB = async (
         id: newConversation.id,
       },
       include: {
-        sender: {
-          include: {
-            superAdmin: true,
-            admin: true,
-            driver: true,
-            helper: true,
-          },
-        },
-        receiver: {
-          include: {
-            superAdmin: true,
-            admin: true,
-            driver: true,
-            helper: true,
-          },
-        },
+        sender: true,
+        receiver: true,
       },
     });
     return responseData;

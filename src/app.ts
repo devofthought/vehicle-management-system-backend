@@ -1,16 +1,28 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import express, { Application } from 'express';
 import cors from 'cors';
 import { requestLog } from './shared/logger';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFoundHandler from './app/middlewares/notFoundHandler';
-const app: Application = express();
 import path from 'path';
-
 import cookieParser from 'cookie-parser';
+
+// sock.io
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 // import router
 import routes from './app/routes';
 import corsOptions from './config/corsOptions';
+
+const app: Application = express();
+// socket.io
+const server = createServer(app);
+export const io = new Server(server);
+
+io.on('connection', socket => {
+  console.log('a user connected');
+});
 
 // request log
 app.use(requestLog);

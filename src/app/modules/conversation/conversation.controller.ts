@@ -13,44 +13,53 @@ import {
 import pick from '../../../shared/pick';
 import { conversationFilterableFields } from './conversation.constant';
 import { paginationFields } from '../../../constants/pagination';
+import { io } from '../../../app';
 
-export const createConversation = catchAsync(async (req: Request, res: Response) => {
-  const user = req.user;
+export const createConversation = catchAsync(
+  async (req: Request, res: Response) => {
+    const user = req.user;
 
-  const result = await createConversationToDB(user, req.body);
+    const result = await createConversationToDB(user, req.body);
 
-  sendResponse<Conversation>(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: 'Conversation created successfully',
-    data: result,
-  });
-});
+    io.emit('conversation', { ...result });
 
-export const getAllConversation = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, conversationFilterableFields);
-  const pagination = pick(req.query, paginationFields);
+    sendResponse<Conversation>(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'Conversation created successfully',
+      data: result,
+    });
+  }
+);
 
-  const result = await getAllConversationFromDB(filters, pagination);
+export const getAllConversation = catchAsync(
+  async (req: Request, res: Response) => {
+    const filters = pick(req.query, conversationFilterableFields);
+    const pagination = pick(req.query, paginationFields);
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Conversations retrieved successfully',
-    meta: result.meta,
-    data: result.data,
-  });
-});
+    const result = await getAllConversationFromDB(filters, pagination);
 
-export const getSingleConversation = catchAsync(async (req: Request, res: Response) => {
-  const result = await getSingleConversationFromDB(req.params.id);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Single conversation fetched successfully',
-    data: result,
-  });
-});
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Conversations retrieved successfully',
+      meta: result.meta,
+      data: result.data,
+    });
+  }
+);
+
+export const getSingleConversation = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getSingleConversationFromDB(req.params.id);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single conversation fetched successfully',
+      data: result,
+    });
+  }
+);
 
 export const updateSingleConversation = catchAsync(
   async (req: Request, res: Response) => {
