@@ -69,6 +69,10 @@ const getAll = async (
     },
     skip,
     take: limit,
+    include: {
+      vehicle: true,
+      expenseHead: true,
+    },
   });
 
   const total = await prisma.expense.count({
@@ -92,6 +96,10 @@ const getSingle = async (id: string): Promise<Expense | null> => {
   const result = await prisma.expense.findUnique({
     where: {
       id,
+    },
+    include: {
+      vehicle: true,
+      expenseHead: true,
     },
   });
 

@@ -1,3 +1,3 @@
 export const maintenanceHeadSearchableFields = ['label'];
 
-export const maintenanceHeadFilterableFields = ['searchTerm', 'accountHeadId'];
+export const maintenanceHeadFilterableFields = ['searchTerm'];

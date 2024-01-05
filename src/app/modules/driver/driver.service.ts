@@ -72,6 +72,13 @@ const getSingle = async (id: string): Promise<Driver | null> => {
     where: {
       id,
     },
+    include: {
+      vehicles: true,
+      trips: true,
+      fuels: true,
+      maintenances: true,
+      accidentHistories: true,
+    },
   });
 
   return result;

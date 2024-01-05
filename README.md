@@ -1,192 +1,125 @@
-### Live Link: https://vms-system-backend.vercel.app
+# VehiTrack Backend
 
+Welcome to the backend repository of VehiTrack, the innovative Vehicle Management System designed to streamline your vehicle management experience. This backend repository is an integral part of the Binarydevs project, providing the server-side functionality for VehiTrack.
 
-### Application Routes:
+## Table of Contents
 
-### Auth
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Getting Started](#getting-started)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
+- [License](#license)
 
-- api/v1/auth/login (POST)
-- api/v1/auth/logout (POST)
-- api/v1/auth/refresh-token (GET)
+## Project Overview
 
-### Profile
+VehiTrack is a comprehensive Vehicle Management System that aims to optimize resources, save time, and enhance the overall efficiency of handling a fleet of vehicles. The backend is responsible for handling data storage, processing business logic, and communicating with the frontend to provide a seamless user experience.
 
-- api/v1/profile (GET)
+## Features
 
-### User
+- **Efficient Vehicle Management:**
 
-- api/v1/user/create-super-admin (POST)
-- api/v1/user/create-admin (POST)
-- api/v1/user/create-driver (POST)
-- api/v1/user/create-helper (POST)
+  - Detailed vehicle information: make, model, year, registration, and status.
+  - Attachment of insurance, registration, and inspection documents.
+
+- **Comprehensive Driver Management:**
+
+  - Driver profiles with personal, contact, and license details.
+  - Tracking performance, certifications, and training.
+
+- **Helper Management:**
+
+  - Maintenance of helper details for coordination.
+
+- **Real-time Collaborative Chat System:**
+
+  - Foster seamless communication among team members with an integrated chat system using Socket.io.
+
+- **Seamless Trip Planning:**
+
+  - Plan trips with details like departure, arrival, and assigned vehicles.
+  - Record trip expenses, including fuel, tolls, and miscellaneous costs.
+
+- **Smart Workshop and Maintenance:**
+
+  - Schedule routine maintenance and log unscheduled events.
+  - Document accidental maintenance, including costs.
+
+- **Inventory and Stock Control:**
+
+  - Monitor inventory and record items in/out.
+  - Provide stock summaries for control.
+
+- **Accident History Management:**
+
+  - Track accidents with dates, locations, and damage details.
+  - Attach relevant documents.
+
+- **Paperwork and Document Management:**
+
+  - Manage important documents such as tax, tokens, permits, registrations, and fitness.
+  - Set reminders for renewals.
+
+- **Accurate Expense Tracking:**
+
+  - Categorize and track miscellaneous expenses.
+  - Define expense heads for detailed reporting.
+
+- **Financial Management Integration:**
+
+  - Seamlessly integrate with financial systems to track income and expenses.
+  - Generate comprehensive financial reports.
+
+- **Reporting Option:**
+  - Generate various reports, including vehicle and driver performance, maintenance logs, and financial summaries.
+  - Provide customizable reporting options.
+
+## Technology Stack
+
+- **Node.js:** JavaScript runtime for server-side development.
+- **Express.js:** Web application framework for Node.js.
+- **Prisma:** Modern database access toolkit.
+- **PostgreSQL:** Open-source relational database.
+- **Socket.io:** Real-time bidirectional event-based communication.
+
+## Getting Started
+
+To get started with the VehiTrack backend, follow these steps:
+
+1. Clone the repository: `git clone [repository_url]`
+2. Install dependencies: `yarn add`
+3. Set up the database and configure the environment variables.
+4. Run the server: `yarn run dev`
+
+For more detailed instructions and configuration options, refer to the [Documentation Link](https://docs.google.com/document/d/1p9UTRG0EbPuOUZziWcvhrJbCLFHpTxKn5TNf2t-Sji0/edit?usp=sharing).
+
+## API Documentation
+
+Explore the API endpoints and understand how to interact with the VehiTrack backend by referring to the [Postman API Documentation](https://documenter.getpostman.com/view/27398089/2s9YkuZJTB).
+
+## Predefined User Accounts
 
 ### Super Admin
 
-- api/v1/super-admin (GET)
-- api/v1/super-admin/:id (GET)
-- api/v1/super-admin/:id (PATCH)
-- api/v1/super-admin/:id/inactive (PATCH)
+- **User ID:** SA00001
+- **Password:** 123456
 
 ### Admin
 
-- api/v1/admin (GET)
-- api/v1/admin/:id (GET)
-- api/v1/admin/:id (PATCH)
-- api/v1/admin/:id/inactive (PATCH)
+- **User ID:** A00001
+- **Password:** 123456
 
 ### Driver
 
-- api/v1/driver (GET)
-- api/v1/driver/:id (GET)
-- api/v1/driver/:id (PATCH)
-- api/v1/driver/:id/inactive (PATCH)
+- **User ID:** D00001
+- **Password:** 123456
 
 ### Helper
 
-- api/v1/helper (GET)
-- api/v1/helper/:id (GET)
-- api/v1/helper/:id (PATCH)
-- api/v1/helper/:id/inactive (PATCH)
+- **User ID:** H00001
+- **Password:** 123456
 
-### Brand
+## License
 
-- api/v1/brand/create (POST)
-- api/v1/brand (GET)
-- api/v1/brand/:id (GET)
-- api/v1/brand/:id (PATCH)
-
-### Model
-
-- api/v1/model/create (POST)
-- api/v1/model (GET)
-- api/v1/model/:id (GET)
-- api/v1/model/:id (PATCH)
-
-### Vehicle
-
-- api/v1/vehicle/create (POST)
-- api/v1/vehicle (GET)
-- api/v1/vehicle/:id (GET)
-- api/v1/vehicle/:id (PATCH)
-- api/v1/vehicle/:id/inactive (PATCH)
-
-### Party
-
-- api/v1/party/create (POST)
-- api/v1/party (GET)
-- api/v1/party/:id (GET)
-- api/v1/party/:id (PATCH)
-- api/v1/party/:id/inactive (PATCH)
-
-### Trip
-
-- api/v1/trip/create (POST)
-- api/v1/trip (GET)
-- api/v1/trip/:id (GET)
-- api/v1/trip/:id (PATCH)
-- api/v1/trip/:id (DELETE)
-- api/v1/trip/:id/trip-expense (PATCH)
-
-### Account Type
-
-- api/v1/account-type/create (POST)
-- api/v1/account-type (GET)
-- api/v1/account-type/:id (GET)
-- api/v1/account-type/:id (PATCH)
-
-### Account Head
-
-- api/v1/account-head/create (POST)
-- api/v1/account-head (GET)
-- api/v1/account-head/:id (GET)
-- api/v1/account-head/:id (PATCH)
-
-### Expense Head
-
-- api/v1/expense-head/create (POST)
-- api/v1/expense-head (GET)
-- api/v1/expense-head/:id (GET)
-- api/v1/expense-head/:id (PATCH)
-
-### Expense
-
-- api/v1/expense/create (POST)
-- api/v1/expense (GET)
-- api/v1/expense/:id (GET)
-- api/v1/expense/:id (PATCH)
-- api/v1/expense/:id (DELETE)
-
-### Fuel Type
-
-- api/v1/fuel-type/create (POST)
-- api/v1/fuel-type (GET)
-- api/v1/fuel-type/:id (GET)
-- api/v1/fuel-type/:id (PATCH)
-
-### Fuel Station
-
-- api/v1/fuel-station/create (POST)
-- api/v1/fuel-station (GET)
-- api/v1/fuel-station/:id (GET)
-- api/v1/fuel-station/:id (PATCH)
-
-### Fuel
-
-- api/v1/fuel/create (POST)
-- api/v1/fuel (GET)
-- api/v1/fuel/:id (GET)
-- api/v1/fuel/:id (PATCH)
-- api/v1/fuel/:id (DELETE)
-
-### Unit of Measurement
-
-- api/v1/uom/create (POST)
-- api/v1/uom (GET)
-- api/v1/uom/:id (GET)
-- api/v1/uom/:id (PATCH)
-
-### Equipment
-
-- api/v1/equipment/create (POST)
-- api/v1/equipment (GET)
-- api/v1/equipment/:id (GET)
-- api/v1/equipment/:id (PATCH)
-
-### Equipment In
-
-- api/v1/equipment-in/create (POST)
-- api/v1/equipment-in (GET)
-- api/v1/equipment-in/:id (GET)
-- api/v1/equipment-in/:id (PATCH)
-- api/v1/equipment-in/:id (DELETE)
-
-### Maintenance Head
-
-- api/v1/maintenance-head/create (POST)
-- api/v1/maintenance-head (GET)
-- api/v1/maintenance-head/:id (GET)
-- api/v1/maintenance-head/:id (PATCH)
-
-### Maintenance
-
-- api/v1/maintenance/create (POST)
-- api/v1/maintenance (GET)
-- api/v1/maintenance/:id (GET)
-- api/v1/maintenance/:id (PATCH)
-- api/v1/maintenance/:id (DELETE)
-
-### Accident History
-
-- api/v1/accident-history/create (POST)
-- api/v1/accident-history (GET)
-- api/v1/accident-history/:id (GET)
-- api/v1/accident-history/:id (PATCH)
-- api/v1/accident-history/:id (DELETE)
-
-### Paper Work
-
-- api/v1/paper-work/create (POST)
-- api/v1/paper-work (GET)
-- api/v1/paper-work/:id (GET)
-- api/v1/paper-work/:id (PATCH)
-- api/v1/paper-work/:id (DELETE)
+This project is licensed under the [MIT License](#). Feel free to use, modify, and distribute it as per the terms of the license.

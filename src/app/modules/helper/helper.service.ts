@@ -72,6 +72,10 @@ const getSingle = async (id: string): Promise<Helper | null> => {
     where: {
       id,
     },
+    include: {
+      vehicles: true,
+      trips: true,
+    },
   });
 
   return result;
