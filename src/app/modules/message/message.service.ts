@@ -21,6 +21,9 @@ export const createMessageToDB = async (
       message,
       conversationId,
     },
+    include: {
+      conversation: true,
+    },
   });
 
   if (result) {
@@ -66,6 +69,13 @@ export const getAllMessageFromDB = async (
 
   const result = await prisma.message.findMany({
     where: whereCondition,
+    include: {
+      conversation: {
+        include: {
+          receiver: true,
+        },
+      },
+    },
     skip,
     take: limit,
     orderBy:
