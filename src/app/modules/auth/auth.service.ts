@@ -18,6 +18,12 @@ const login = async (
     where: {
       userName,
     },
+    include: {
+      superAdmin: true,
+      admin: true,
+      driver: true,
+      helper: true,
+    },
   });
 
   if (!isUserExist) {
@@ -31,16 +37,52 @@ const login = async (
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
   // create access token and refresh token
-  const { id, role } = isUserExist;
+  const { id, role, superAdmin, admin, driver, helper } = isUserExist;
 
   const accessToken = jwtHelpers.createToken(
-    { id, role },
+    {
+      id,
+      role,
+      userName,
+      fullName: superAdmin
+        ? superAdmin?.fullName
+        : admin
+        ? admin.fullName
+        : driver
+        ? driver.fullName
+        : helper?.fullName,
+      profileImg: superAdmin
+        ? superAdmin?.profileImg
+        : admin
+        ? admin.profileImg
+        : driver
+        ? driver.profileImg
+        : helper?.profileImg,
+    },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
   );
 
   const refreshToken = jwtHelpers.createToken(
-    { id, role },
+    {
+      id,
+      role,
+      userName,
+      fullName: superAdmin
+        ? superAdmin?.fullName
+        : admin
+        ? admin.fullName
+        : driver
+        ? driver.fullName
+        : helper?.fullName,
+      profileImg: superAdmin
+        ? superAdmin?.profileImg
+        : admin
+        ? admin.profileImg
+        : driver
+        ? driver.profileImg
+        : helper?.profileImg,
+    },
     config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as string
   );
@@ -72,18 +114,39 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
     where: {
       id,
     },
+    include: {
+      superAdmin: true,
+      admin: true,
+      driver: true,
+      helper: true,
+    },
   });
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
-
+  const { role, userName, superAdmin, admin, driver, helper } = isUserExist;
   //generate new token
 
   const newAccessToken = jwtHelpers.createToken(
     {
-      id: isUserExist.id,
-      role: isUserExist.role,
+      id,
+      role,
+      userName,
+      fullName: superAdmin
+        ? superAdmin?.fullName
+        : admin
+        ? admin.fullName
+        : driver
+        ? driver.fullName
+        : helper?.fullName,
+      profileImg: superAdmin
+        ? superAdmin?.profileImg
+        : admin
+        ? admin.profileImg
+        : driver
+        ? driver.profileImg
+        : helper?.profileImg,
     },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
