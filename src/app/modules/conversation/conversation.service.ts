@@ -17,7 +17,7 @@ export const createConversationToDB = async (
 ): Promise<any> => {
   const { message, senderId, receiverId } = conversationData;
 
-  const newConversation = await prisma.$transaction(async transactionClient => {
+  const newResult = await prisma.$transaction(async transactionClient => {
     const isExist = await transactionClient.conversation.findFirst({
       where: {
         senderId,
@@ -26,29 +26,30 @@ export const createConversationToDB = async (
     });
 
     if (isExist) {
-      const result = await transactionClient.conversation.update({
+      const resConversation = await transactionClient.conversation.update({
         where: {
           id: isExist.id,
         },
         data: { message },
       });
 
-      if (!result) {
+      if (!resConversation) {
         throw new ApiError(
           httpStatus.BAD_REQUEST,
           'Unable to update conversation'
         );
       }
 
-      await transactionClient.message.create({
-        data: {
-          message,
-          conversationId: result.id,
-        },
-      });
-      return result;
+      // const resMessage = await transactionClient.message.create({
+      //   data: {
+      //     message,
+      //     conversationId: resConversation.id,
+      //   },
+      // });
+      // return { conversation: resConversation, message: resMessage };
+      return resConversation;
     } else {
-      const result = await transactionClient.conversation.create({
+      const resConversation = await transactionClient.conversation.create({
         data: {
           message,
           senderId,
@@ -56,33 +57,36 @@ export const createConversationToDB = async (
         },
       });
 
-      if (!result) {
+      if (!resConversation) {
         throw new ApiError(
           httpStatus.BAD_REQUEST,
           'Unable to create conversation'
         );
       }
 
-      await transactionClient.message.create({
-        data: {
-          message,
-          conversationId: result.id,
-        },
-      });
-      return result;
+      // const resMessage = await transactionClient.message.create({
+      //   data: {
+      //     message,
+      //     conversationId: resConversation.id,
+      //   },
+      // });
+      // return { conversation: resConversation, message: resMessage };
+      return resConversation;
     }
   });
 
-  if (newConversation) {
+  if (newResult) {
     const responseData = await prisma.conversation.findUnique({
       where: {
-        id: newConversation.id,
+        // id: newResult.conversation.id,
+        id: newResult.id,
       },
       include: {
         sender: true,
         receiver: true,
       },
     });
+    // return { conversation: responseData, message: newResult.message };
     return responseData;
   } else {
     throw new ApiError(

@@ -13,15 +13,18 @@ import {
 import pick from '../../../shared/pick';
 import { conversationFilterableFields } from './conversation.constant';
 import { paginationFields } from '../../../constants/pagination';
-import { io } from '../../../app';
 
 export const createConversation = catchAsync(
   async (req: Request, res: Response) => {
+    const io = req.app.get('io');
+
     const user = req.user;
 
     const result = await createConversationToDB(user, req.body);
 
     io.emit('conversation', { ...result });
+    // io.emit('conversation', { ...result.conversation });
+    // io.emit('message', { ...result.message });
 
     sendResponse<Conversation>(res, {
       success: true,

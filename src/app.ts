@@ -18,11 +18,13 @@ import corsOptions from './config/corsOptions';
 const app: Application = express();
 // socket.io
 const server = createServer(app);
-export const io = new Server(server);
+const io = new Server(server);
 
-io.on('connection', socket => {
-  console.log('a user connected');
-});
+// io.on('connection', socket => {
+//   console.log('a user connected');
+// });
+
+app.set('io', io);
 
 // request log
 app.use(requestLog);
@@ -47,4 +49,4 @@ app.use(globalErrorHandler);
 // handle not found route
 app.use(notFoundHandler);
 
-export default app;
+export default server;

@@ -15,9 +15,12 @@ import { messageFilterableFields } from './message.constant';
 import { paginationFields } from '../../../constants/pagination';
 
 export const createMessage = catchAsync(async (req: Request, res: Response) => {
+  const io = req.app.get('io');
   const user = req.user;
 
   const result = await createMessageToDB(user, req.body);
+
+  io.emit('message', { ...result });
 
   sendResponse<Message>(res, {
     success: true,
