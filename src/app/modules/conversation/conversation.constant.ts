@@ -1,4 +1,5 @@
 export const conversationSearchableFields: string[] = [
+  'participants',
   'message',
   'senderId',
   'receiverId',
@@ -6,6 +7,7 @@ export const conversationSearchableFields: string[] = [
 
 export const conversationFilterableFields: string[] = [
   'searchTerm',
+  'participants',
   'message',
   'senderId',
   'receiverId',

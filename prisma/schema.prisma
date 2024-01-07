@@ -478,12 +478,13 @@ model PaperWork {
 }
 
 model Conversation {
-  id         String @id @default(uuid())
-  message    String
-  senderId   String
-  sender     User   @relation(name: "Sender", fields: [senderId], references: [id])
-  receiverId String
-  receiver   User   @relation(name: "Receiver", fields: [receiverId], references: [id])
+  id           String @id @default(uuid())
+  message      String
+  participants String
+  senderId     String
+  sender       User   @relation(name: "Sender", fields: [senderId], references: [id])
+  receiverId   String
+  receiver     User   @relation(name: "Receiver", fields: [receiverId], references: [id])
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -495,6 +496,8 @@ model Conversation {
 model Message {
   id             String       @id @default(uuid())
   message        String
+  senderId       String
+  receiverId     String
   conversationId String
   conversation   Conversation @relation(fields: [conversationId], references: [id])
 

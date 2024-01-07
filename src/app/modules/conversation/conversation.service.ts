@@ -15,13 +15,14 @@ export const createConversationToDB = async (
   user: JwtPayload | null,
   conversationData: Conversation
 ): Promise<any> => {
-  const { message, senderId, receiverId } = conversationData;
+  const { participants, message, senderId, receiverId } = conversationData;
 
   const newResult = await prisma.$transaction(async transactionClient => {
     const isExist = await transactionClient.conversation.findFirst({
       where: {
-        senderId,
-        receiverId,
+        participants: {
+          contains: senderId,
+        },
       },
     });
 
@@ -31,6 +32,10 @@ export const createConversationToDB = async (
           id: isExist.id,
         },
         data: { message },
+        include: {
+          sender: true,
+          receiver: true,
+        },
       });
 
       if (!resConversation) {
@@ -40,20 +45,35 @@ export const createConversationToDB = async (
         );
       }
 
-      // const resMessage = await transactionClient.message.create({
-      //   data: {
-      //     message,
-      //     conversationId: resConversation.id,
-      //   },
-      // });
-      // return { conversation: resConversation, message: resMessage };
-      return resConversation;
-    } else {
-      const resConversation = await transactionClient.conversation.create({
+      const resMessage = await transactionClient.message.create({
         data: {
           message,
           senderId,
           receiverId,
+          conversationId: resConversation.id,
+        },
+        include: {
+          conversation: {
+            include: {
+              sender: true,
+              receiver: true,
+            },
+          },
+        },
+      });
+      return { conversation: resConversation, message: resMessage };
+      // return resConversation;
+    } else {
+      const resConversation = await transactionClient.conversation.create({
+        data: {
+          participants,
+          message,
+          senderId,
+          receiverId,
+        },
+        include: {
+          sender: true,
+          receiver: true,
         },
       });
 
@@ -64,30 +84,41 @@ export const createConversationToDB = async (
         );
       }
 
-      // const resMessage = await transactionClient.message.create({
-      //   data: {
-      //     message,
-      //     conversationId: resConversation.id,
-      //   },
-      // });
-      // return { conversation: resConversation, message: resMessage };
-      return resConversation;
+      const resMessage = await transactionClient.message.create({
+        data: {
+          message,
+          senderId,
+          receiverId,
+          conversationId: resConversation.id,
+        },
+        include: {
+          conversation: {
+            include: {
+              sender: true,
+              receiver: true,
+            },
+          },
+        },
+      });
+      return { conversation: resConversation, message: resMessage };
+      // return resConversation;
     }
   });
 
   if (newResult) {
-    const responseData = await prisma.conversation.findUnique({
-      where: {
-        // id: newResult.conversation.id,
-        id: newResult.id,
-      },
-      include: {
-        sender: true,
-        receiver: true,
-      },
-    });
+    // const responseData = await prisma.conversation.findUnique({
+    //   where: {
+    //     id: newResult.conversation.id,
+    //     // id: newResult.id,
+    //   },
+    //   include: {
+    //     sender: true,
+    //     receiver: true,
+    //   },
+    // });
     // return { conversation: responseData, message: newResult.message };
-    return responseData;
+    return newResult;
+    // return responseData;
   } else {
     throw new ApiError(
       httpStatus.BAD_REQUEST,

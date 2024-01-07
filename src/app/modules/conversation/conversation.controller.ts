@@ -22,7 +22,7 @@ export const createConversation = catchAsync(
 
     const result = await createConversationToDB(user, req.body);
 
-    io.emit('conversation', { ...result });
+    io.emit('conversation-message', { ...result });
     // io.emit('conversation', { ...result.conversation });
     // io.emit('message', { ...result.message });
 

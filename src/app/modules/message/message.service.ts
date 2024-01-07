@@ -14,15 +14,22 @@ export const createMessageToDB = async (
   user: JwtPayload | null,
   messageData: Message
 ): Promise<any> => {
-  const { message, conversationId } = messageData;
+  const { message, senderId, receiverId, conversationId } = messageData;
 
   const result = await prisma.message.create({
     data: {
       message,
+      senderId,
+      receiverId,
       conversationId,
     },
     include: {
-      conversation: true,
+      conversation: {
+        include: {
+          sender: true,
+          receiver: true,
+        },
+      },
     },
   });
 
@@ -72,6 +79,7 @@ export const getAllMessageFromDB = async (
     include: {
       conversation: {
         include: {
+          sender: true,
           receiver: true,
         },
       },
