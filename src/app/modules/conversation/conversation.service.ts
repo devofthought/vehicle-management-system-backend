@@ -21,7 +21,7 @@ export const createConversationToDB = async (
     const isExist = await transactionClient.conversation.findFirst({
       where: {
         participants: {
-          contains: senderId,
+          contains: receiverId,
         },
       },
     });
