@@ -26,6 +26,8 @@ import { MaintenanceRoutes } from '../modules/maintenance/maintenance.route';
 import { TripRoutes } from '../modules/trip/trip.route';
 import { ProfileRoutes } from '../modules/profile/profile.route';
 import { ReportRoutes } from '../modules/report/report.route';
+import { ConversationRoutes } from '../modules/conversation/conversation.route';
+import { MessageRoutes } from '../modules/message/message.route';
 
 const router = express.Router();
 
@@ -137,6 +139,14 @@ const moduleRoutes = [
   {
     path: '/report',
     route: ReportRoutes,
+  },
+  {
+    path: '/conversations',
+    route: ConversationRoutes,
+  },
+  {
+    path: '/messages',
+    route: MessageRoutes,
   },
 ];
 

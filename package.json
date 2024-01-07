@@ -37,6 +37,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/socket.io": "^3.0.2",
     "bcrypt": "5.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -44,6 +45,7 @@
     "http-status": "^1.6.2",
     "jsonwebtoken": "^9.0.0",
     "prisma": "^5.2.0",
+    "socket.io": "^4.7.3",
     "zod": "^3.21.4"
   }
 }
