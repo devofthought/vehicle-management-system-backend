@@ -7,6 +7,18 @@ import { ENUM_USER_ROLE } from '../../../enums/user';
 
 const router = express.Router();
 
+// get all
+router.get(
+  '/',
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.DRIVER,
+    ENUM_USER_ROLE.HELPER
+  ),
+  UserController.getAll
+);
+
 // create super admin
 router.post(
   '/create-super-admin',

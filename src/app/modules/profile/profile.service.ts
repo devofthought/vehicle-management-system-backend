@@ -13,7 +13,12 @@ const getProfile = async (id: string): Promise<User | null> => {
       driver: {
         include: {
           vehicles: true,
-          trips: true,
+          trips: {
+            include: {
+              driver: true,
+              helper: true,
+            },
+          },
           fuels: true,
           maintenances: true,
           accidentHistories: true,
@@ -22,7 +27,12 @@ const getProfile = async (id: string): Promise<User | null> => {
       helper: {
         include: {
           vehicles: true,
-          trips: true,
+          trips: {
+            include: {
+              driver: true,
+              helper: true,
+            },
+          },
         },
       },
     },

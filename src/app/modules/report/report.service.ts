@@ -224,17 +224,13 @@ const vehicleSummaryReport = async (
         where: tripWhereConditions,
         select: {
           amount: true,
-          expenses: {
-            select: {
-              amount: true,
-            },
-          },
         },
       },
       expenses: {
         where: expenseWhereConditions,
         select: {
           amount: true,
+          isMisc: true,
         },
       },
       maintenances: {
