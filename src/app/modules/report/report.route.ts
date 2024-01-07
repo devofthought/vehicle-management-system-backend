@@ -53,4 +53,40 @@ router.get(
   ReportController.vehicleSummaryReport
 );
 
+// trip summary
+router.get(
+  '/trip-summary',
+  // auth(
+  //   ENUM_USER_ROLE.SUPER_ADMIN,
+  //   ENUM_USER_ROLE.ADMIN,
+  //   ENUM_USER_ROLE.DRIVER,
+  //   ENUM_USER_ROLE.HELPER
+  // ),
+  ReportController.getTripSummary
+);
+
+// get trip summary by grouping year, month
+router.get(
+  '/trip-summary-year-month',
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.DRIVER,
+    ENUM_USER_ROLE.HELPER
+  ),
+  ReportController.tripSummaryGroupByMonthYear
+);
+
+// get fuel summary by grouping year, month
+router.get(
+  '/fuel-summary-year-month',
+  auth(
+    ENUM_USER_ROLE.SUPER_ADMIN,
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.DRIVER,
+    ENUM_USER_ROLE.HELPER
+  ),
+  ReportController.fuelSummaryGroupByMonthYear
+);
+
 export const ReportRoutes = router;

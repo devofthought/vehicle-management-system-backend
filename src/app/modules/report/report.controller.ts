@@ -10,6 +10,7 @@ import {
   summaryReportFilterableFields,
 } from './report.constant';
 import { ReportService } from './report.service';
+import { ITotalTripSummary, IYearMonthSummary } from './report.interface';
 
 // balance sheet
 const balanceSheet = catchAsync(async (req: Request, res: Response) => {
@@ -69,9 +70,52 @@ const vehicleSummaryReport = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// get all trip summary
+const getTripSummary = catchAsync(async (req: Request, res: Response) => {
+  const result = await ReportService.getTripSummary();
+
+  sendResponse<ITotalTripSummary>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Trip Summary retrieved successfully',
+    data: result,
+  });
+});
+
+// get trip summary by grouping year, month
+const tripSummaryGroupByMonthYear = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await ReportService.tripSummaryGroupByMonthYear();
+
+    sendResponse<IYearMonthSummary[]>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Trip Summary retrieved successfully',
+      data: result,
+    });
+  }
+);
+
+// get fuel summary by grouping year, month
+const fuelSummaryGroupByMonthYear = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await ReportService.fuelSummaryGroupByMonthYear();
+
+    sendResponse<IYearMonthSummary[]>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Fuels Summary retrieved successfully',
+      data: result,
+    });
+  }
+);
+
 export const ReportController = {
   balanceSheet,
   fuelStatus,
   stockStatus,
   vehicleSummaryReport,
+  getTripSummary,
+  tripSummaryGroupByMonthYear,
+  fuelSummaryGroupByMonthYear,
 };
