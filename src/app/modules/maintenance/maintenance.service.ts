@@ -116,6 +116,7 @@ const getAll = async (
     include: {
       vehicle: true,
       driver: true,
+      maintenanceHead: true,
       equipmentUses: {
         include: {
           equipment: true,
