@@ -149,6 +149,7 @@ const getSingle = async (id: string): Promise<Maintenance | null> => {
     include: {
       vehicle: true,
       driver: true,
+      maintenanceHead: true,
       equipmentUses: {
         include: {
           equipment: true,
