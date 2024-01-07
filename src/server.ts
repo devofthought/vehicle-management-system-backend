@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // import { Server } from 'http';
 // import app from './app';
-import config from './config';
 import server from './app';
+import config from './config';
 
 async function main() {
   server.listen(config.port, () => {
