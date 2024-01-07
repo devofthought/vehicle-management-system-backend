@@ -5,7 +5,12 @@ import { AccountHead, Equipment, Prisma, Vehicle } from '@prisma/client';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
-import { IEquipmentFilters, ISummaryReportFilters } from './report.interface';
+import {
+  IEquipmentFilters,
+  ISummaryReportFilters,
+  ITotalTripSummary,
+  IYearMonthSummary,
+} from './report.interface';
 
 // balance sheet
 const balanceSheet = async (): Promise<AccountHead[]> => {
@@ -224,17 +229,13 @@ const vehicleSummaryReport = async (
         where: tripWhereConditions,
         select: {
           amount: true,
-          expenses: {
-            select: {
-              amount: true,
-            },
-          },
         },
       },
       expenses: {
         where: expenseWhereConditions,
         select: {
           amount: true,
+          isMisc: true,
         },
       },
       maintenances: {
@@ -274,9 +275,72 @@ const vehicleSummaryReport = async (
   };
 };
 
+const getTripSummary = async (): Promise<ITotalTripSummary> => {
+  const trips = await prisma.trip.groupBy({
+    by: ['status'],
+    where: {
+      status: 'Completed',
+    },
+    _sum: {
+      amount: true,
+    },
+    _count: true,
+  });
+  const expenses = await prisma.expense.groupBy({
+    by: ['isMisc'],
+    where: {
+      isMisc: false,
+    },
+    _sum: {
+      amount: true,
+    },
+  });
+
+  const result: ITotalTripSummary = {};
+
+  if (trips.length) {
+    result.count = trips[0]._count || 0;
+    result.amount = trips[0]._sum.amount || 0;
+  }
+
+  if (expenses.length) {
+    result.expense = expenses[0]._sum.amount || 0;
+  }
+
+  return result;
+};
+
+const tripSummaryGroupByMonthYear = async (): Promise<IYearMonthSummary[]> => {
+  const result: IYearMonthSummary[] =
+    await prisma.$queryRaw`SELECT EXTRACT(YEAR FROM "startDate") AS year, EXTRACT(MONTH FROM "startDate") AS month,  SUM(amount) AS total_amount FROM trips GROUP BY year, month ORDER BY year, month`;
+
+  const formattedResult = result.map(row => ({
+    year: row.year,
+    month: row.month,
+    total_amount: Number(row.total_amount),
+  }));
+  return formattedResult;
+};
+
+const fuelSummaryGroupByMonthYear = async (): Promise<IYearMonthSummary[]> => {
+  const result: IYearMonthSummary[] =
+    await prisma.$queryRaw`SELECT EXTRACT(YEAR FROM date) AS year, EXTRACT(MONTH FROM date) AS month, SUM(quantity) AS total_quantity, SUM(amount) AS total_amount FROM fuels GROUP BY year, month ORDER BY year, month`;
+
+  const formattedResult = result.map(row => ({
+    year: row.year,
+    month: row.month,
+    total_quantity: Number(row.total_quantity),
+    total_amount: Number(row.total_amount),
+  }));
+  return formattedResult;
+};
+
 export const ReportService = {
   balanceSheet,
   fuelStatus,
   stockStatus,
   vehicleSummaryReport,
+  getTripSummary,
+  tripSummaryGroupByMonthYear,
+  fuelSummaryGroupByMonthYear,
 };

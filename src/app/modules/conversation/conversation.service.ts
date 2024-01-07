@@ -15,89 +15,110 @@ export const createConversationToDB = async (
   user: JwtPayload | null,
   conversationData: Conversation
 ): Promise<any> => {
-  const { message, senderId, receiverId } = conversationData;
+  const { participants, message, senderId, receiverId } = conversationData;
 
-  const newConversation = await prisma.$transaction(async transactionClient => {
+  const newResult = await prisma.$transaction(async transactionClient => {
     const isExist = await transactionClient.conversation.findFirst({
       where: {
-        senderId,
-        receiverId,
+        participants: {
+          contains: receiverId,
+        },
       },
     });
 
     if (isExist) {
-      const result = await transactionClient.conversation.update({
+      const resConversation = await transactionClient.conversation.update({
         where: {
           id: isExist.id,
         },
         data: { message },
+        include: {
+          sender: true,
+          receiver: true,
+        },
       });
 
-      if (!result) {
+      if (!resConversation) {
         throw new ApiError(
           httpStatus.BAD_REQUEST,
           'Unable to update conversation'
         );
       }
 
-      await transactionClient.message.create({
-        data: {
-          message,
-          conversationId: result.id,
-        },
-      });
-      return result;
-    } else {
-      const result = await transactionClient.conversation.create({
+      const resMessage = await transactionClient.message.create({
         data: {
           message,
           senderId,
           receiverId,
+          conversationId: resConversation.id,
+        },
+        include: {
+          conversation: {
+            include: {
+              sender: true,
+              receiver: true,
+            },
+          },
+        },
+      });
+      return { conversation: resConversation, message: resMessage };
+      // return resConversation;
+    } else {
+      const resConversation = await transactionClient.conversation.create({
+        data: {
+          participants,
+          message,
+          senderId,
+          receiverId,
+        },
+        include: {
+          sender: true,
+          receiver: true,
         },
       });
 
-      if (!result) {
+      if (!resConversation) {
         throw new ApiError(
           httpStatus.BAD_REQUEST,
           'Unable to create conversation'
         );
       }
 
-      await transactionClient.message.create({
+      const resMessage = await transactionClient.message.create({
         data: {
           message,
-          conversationId: result.id,
+          senderId,
+          receiverId,
+          conversationId: resConversation.id,
+        },
+        include: {
+          conversation: {
+            include: {
+              sender: true,
+              receiver: true,
+            },
+          },
         },
       });
-      return result;
+      return { conversation: resConversation, message: resMessage };
+      // return resConversation;
     }
   });
 
-  if (newConversation) {
-    const responseData = await prisma.conversation.findUnique({
-      where: {
-        id: newConversation.id,
-      },
-      include: {
-        sender: {
-          include: {
-            superAdmin: true,
-            admin: true,
-            driver: true,
-            helper: true,
-          },
-        },
-        receiver: {
-          include: {
-            superAdmin: true,
-            admin: true,
-            driver: true,
-            helper: true,
-          },
-        },
-      },
-    });
-    return responseData;
+  if (newResult) {
+    // const responseData = await prisma.conversation.findUnique({
+    //   where: {
+    //     id: newResult.conversation.id,
+    //     // id: newResult.id,
+    //   },
+    //   include: {
+    //     sender: true,
+    //     receiver: true,
+    //   },
+    // });
+    // return { conversation: responseData, message: newResult.message };
+    return newResult;
+    // return responseData;
   } else {
     throw new ApiError(
       httpStatus.BAD_REQUEST,

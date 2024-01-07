@@ -1,9 +1,11 @@
-import { Server } from 'http';
-import app from './app';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// import { Server } from 'http';
+// import app from './app';
 import config from './config';
+import server from './app';
 
 async function main() {
-  const server: Server = app.listen(config.port, () => {
+  server.listen(config.port, () => {
     console.log(`Server running on port ${config.port}`);
   });
 
