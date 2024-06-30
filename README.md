@@ -4,13 +4,18 @@ Welcome to the backend repository of VehiTrack, the innovative Vehicle Managemen
 
 ## Table of Contents
 
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Getting Started](#getting-started)
-- [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
+- [VehiTrack Backend](#vehitrack-backend)
+  - [Table of Contents](#table-of-contents)
+  - [Project Overview](#project-overview)
+  - [Features](#features)
+  - [Technology Stack](#technology-stack)
+  - [Getting Started](#getting-started)
+  - [API Documentation](#api-documentation)
+  - [Predefined User Accounts](#predefined-user-accounts)
+    - [Super Admin](#super-admin)
+    - [Admin](#admin)
+    - [Driver](#driver)
+    - [Helper](#helper)
 
 ## Project Overview
 
@@ -31,10 +36,6 @@ VehiTrack is a comprehensive Vehicle Management System that aims to optimize res
 - **Helper Management:**
 
   - Maintenance of helper details for coordination.
-
-- **Real-time Collaborative Chat System:**
-
-  - Foster seamless communication among team members with an integrated chat system using Socket.io.
 
 - **Seamless Trip Planning:**
 
@@ -81,7 +82,6 @@ VehiTrack is a comprehensive Vehicle Management System that aims to optimize res
 - **Express.js:** Web application framework for Node.js.
 - **Prisma:** Modern database access toolkit.
 - **PostgreSQL:** Open-source relational database.
-- **Socket.io:** Real-time bidirectional event-based communication.
 
 ## Getting Started
 
@@ -92,7 +92,6 @@ To get started with the VehiTrack backend, follow these steps:
 3. Set up the database and configure the environment variables.
 4. Run the server: `yarn run dev`
 
-For more detailed instructions and configuration options, refer to the [Documentation Link](https://docs.google.com/document/d/1p9UTRG0EbPuOUZziWcvhrJbCLFHpTxKn5TNf2t-Sji0/edit?usp=sharing).
 
 ## API Documentation
 
@@ -119,7 +118,3 @@ Explore the API endpoints and understand how to interact with the VehiTrack back
 
 - **User ID:** H00001
 - **Password:** 123456
-
-## License
-
-This project is licensed under the [MIT License](#). Feel free to use, modify, and distribute it as per the terms of the license.
